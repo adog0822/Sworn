@@ -10,7 +10,16 @@ export { Ledger };
 const json = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), { status, headers: { "Content-Type": "application/json", "Cache-Control": "no-store" } });
 
-const ledger = (env: Env) => env.LEDGER.get(env.LEDGER.idFromName("quillfeather-v2"));
+// Each visitor gets a private sandbox ledger so demos never collide; calls are routed back by execution id.
+const DEFAULT = "quillfeather-v2";
+const ledgerFor = (env: Env, sid?: string | null) => env.LEDGER.get(env.LEDGER.idFromName(sid ? `s:${sid}` : DEFAULT));
+const ledger = (env: Env) => ledgerFor(env);
+const router = (env: Env) => env.LEDGER.get(env.LEDGER.idFromName("router"));
+const sessionOf = (req: Request, url: URL) => (req.headers.get("x-sworn-session") || url.searchParams.get("sid") || "").replace(/[^a-zA-Z0-9-]/g, "").slice(0, 40) || null;
+async function routed(env: Env, executionId?: string) {
+  const id = executionId && !executionId.startsWith("%(") ? executionId : "";
+  return ledgerFor(env, id ? await router(env).getRoute(id) : null);
+}
 
 const SCENARIOS: Scenario[] = ["contractor_removed", "new_admin_without_mfa", "admin_bypass_closed"];
 
@@ -36,7 +45,7 @@ function callContext(state: Awaited<ReturnType<Ledger["view"]>>, personId: strin
   };
 }
 
-async function startPhoneCall(req: Request, env: Env) {
+async function startPhoneCall(req: Request, env: Env, url: URL) {
   const b = await body(req);
   if (!env.DEMO_PASSCODE || b.passcode !== env.DEMO_PASSCODE) return json({ error: "Phone calls need the demo passcode. Use the browser call or the sample call instead." }, 403);
   const phone = String(b.phone ?? "").replace(/[\s()-]/g, "");
@@ -44,13 +53,15 @@ async function startPhoneCall(req: Request, env: Env) {
   const kind = b.kind === "auditor" ? "auditor" : "interview";
   const agentId = kind === "auditor" ? env.AUDITOR_AGENT_ID : env.INTERVIEWER_AGENT_ID;
   if (!agentId) return json({ error: "Bolna agents are not configured on this deployment." }, 503);
-  const stub = ledger(env);
+  const sid = sessionOf(req, url);
+  const stub = ledgerFor(env, sid);
   const state = await stub.view();
   const personId = kind === "auditor" ? "auditor" : String(b.personId ?? "priya");
   const callback = b.callbackId ? state.callbacks.find((c) => c.id === b.callbackId) : undefined;
   const ctx = callContext(state, personId, callback?.reason);
   try {
     const r = await placeCall(env.BOLNA_API_KEY, agentId, phone, ctx);
+    if (sid) await router(env).setRoute(r.execution_id, sid);
     await stub.registerCall({
       id: r.execution_id, kind, status: r.status ?? "queued", personId, to: phone,
       reason: callback ? `Drift callback for ${callback.claimId}` : kind === "auditor" ? "Auditor line" : ctx.call_reason,
@@ -70,8 +81,9 @@ async function startWebCall(req: Request, env: Env, url: URL) {
   const kind = url.searchParams.get("kind") === "auditor" ? "auditor" : "interview";
   const agentId = kind === "auditor" ? env.AUDITOR_AGENT_ID : env.INTERVIEWER_AGENT_ID;
   if (!agentId) return json({ error: "Bolna agents are not configured on this deployment." }, 503);
-  const stub = ledger(env);
-  if (!(await stub.allowWebCall())) return json({ error: "The browser line is busy (hourly limit). Try the sample call." }, 429);
+  const sid = sessionOf(req, url);
+  const stub = ledgerFor(env, sid);
+  if (!(await ledger(env).allowWebCall())) return json({ error: "The browser line is busy (hourly limit). Try the sample call." }, 429);
   const state = await stub.view();
   const personId = kind === "auditor" ? "auditor" : "priya";
   const callback = state.callbacks.find((c) => c.id === url.searchParams.get("callback"));
@@ -81,6 +93,7 @@ async function startWebCall(req: Request, env: Env, url: URL) {
   if (res.ok) {
     const runId = (JSON.parse(text) as { run_id?: string }).run_id;
     if (runId) {
+      if (sid) await router(env).setRoute(runId, sid);
       await stub.registerCall({
         id: runId, kind, status: "connecting", personId, startedAt: new Date().toISOString(),
         reason: callback ? `Drift callback for ${callback.claimId} (browser)` : kind === "auditor" ? "Auditor line (browser)" : `${ctx.call_reason} (browser)`,
@@ -92,7 +105,7 @@ async function startWebCall(req: Request, env: Env, url: URL) {
 }
 
 async function api(req: Request, env: Env, url: URL): Promise<Response> {
-  const stub = ledger(env);
+  const stub = ledgerFor(env, sessionOf(req, url));
   const path = url.pathname;
   const method = req.method;
 
@@ -126,7 +139,7 @@ async function api(req: Request, env: Env, url: URL): Promise<Response> {
     if (b.action === "start") return json(await stub.replayStart());
     return json(await stub.replayStep(String(b.callId), Number(b.index)));
   }
-  if (path === "/api/calls" && method === "POST") return startPhoneCall(req, env);
+  if (path === "/api/calls" && method === "POST") return startPhoneCall(req, env, url);
   if (path === "/api/web-call/session" && method === "POST") return startWebCall(req, env, url);
 
   const packet = path.match(/^\/api\/packets\/(PKT-\d+)$/);
@@ -136,7 +149,7 @@ async function api(req: Request, env: Env, url: URL): Promise<Response> {
   }
   if (path === "/api/verify" && method === "POST") {
     const b = (await body(req)) as Sealed<unknown>;
-    const { keys } = await stub.publicKey();
+    const { keys } = await ledger(env).publicKey();
     const key = keys.find((k) => k.kid === b.keyId);
     if (!key) return json({ ok: false, reason: "unknown signing key" });
     return json(await verifySealed(b, { kty: key.kty, crv: key.crv, x: key.x }));
@@ -147,14 +160,17 @@ async function api(req: Request, env: Env, url: URL): Promise<Response> {
   if (tool && method === "POST") {
     if (req.headers.get("Authorization") !== `Bearer ${env.TOOL_TOKEN}`) return json({ error: "unauthorized" }, 401);
     const p = await body(req);
-    if (tool[1] === "verify_claim") return json(await stub.toolVerify(p));
-    if (tool[1] === "resolve_claim") return json(await stub.toolResolve(p));
-    if (tool[1] === "answer_auditor_question") return json(await stub.toolAnswer(p));
+    const target = await routed(env, p.execution_id);
+    if (tool[1] === "verify_claim") return json(await target.toolVerify(p));
+    if (tool[1] === "resolve_claim") return json(await target.toolResolve(p));
+    if (tool[1] === "answer_auditor_question") return json(await target.toolAnswer(p));
     return json({ error: "unknown tool" }, 404);
   }
   if (path === "/api/bolna/webhook" && method === "POST") {
     if (url.searchParams.get("token") !== env.WEBHOOK_TOKEN) return json({ error: "unauthorized" }, 401);
-    return json(await stub.webhook(await body(req)));
+    const payload = await body(req);
+    const target = await routed(env, String(payload.execution_id ?? payload.id ?? ""));
+    return json(await target.webhook(payload));
   }
   return json({ error: "Not found" }, 404);
 }

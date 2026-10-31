@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { api } from "./api";
+import { api, SID } from "./api";
 
 export type Role = "interview" | "auditor";
 export type Phase = "idle" | "connecting" | "live" | "ended" | "error";
@@ -85,7 +85,7 @@ export function useCall(onRefresh: () => void) {
     }
     reset(r, "live");
     setPhase("connecting");
-    const qs = new URLSearchParams({ kind: r, ...(callbackId ? { callback: callbackId } : {}) });
+    const qs = new URLSearchParams({ kind: r, sid: SID, ...(callbackId ? { callback: callbackId } : {}) });
     const call = new window.BolnaWebCall({ sessionUrl: `/api/web-call/session?${qs}` });
     sdk.current = call;
     let quietSince = 0;

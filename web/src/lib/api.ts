@@ -22,8 +22,22 @@ export interface LedgerState {
 }
 export type Renders = { engineer: string; buyer: string; board: string; auditor: Record<string, string> };
 
+// A private sandbox per browser tab, so two people demoing at once never reset each other.
+export const SID = (() => {
+  try {
+    const k = "sworn-sid";
+    const v = sessionStorage.getItem(k) ?? Math.random().toString(36).slice(2, 12) + Date.now().toString(36);
+    sessionStorage.setItem(k, v);
+    return v;
+  } catch {
+    return Math.random().toString(36).slice(2, 12);
+  }
+})();
+
 export async function api<T = any>(path: string, body?: unknown): Promise<T> {
-  const res = await fetch(path, body === undefined ? {} : { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+  const headers: Record<string, string> = { "X-Sworn-Session": SID };
+  if (body !== undefined) headers["Content-Type"] = "application/json";
+  const res = await fetch(path, body === undefined ? { headers } : { method: "POST", headers, body: JSON.stringify(body) });
   const data = await res.json().catch(() => ({}));
   if (!res.ok) throw new Error(data.error || `Request failed (${res.status})`);
   return data as T;

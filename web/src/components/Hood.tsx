@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { api, type LedgerState } from "../lib/api";
+import { api, SID, type LedgerState } from "../lib/api";
 import { markOf, Seal } from "./Seal";
 import { SystemLogo, systemKey } from "./SystemLogo";
 import { Button } from "./ui/button";
@@ -95,7 +95,7 @@ export function Hood({ open, onOpenChange, state, refresh }: { open: boolean; on
           <TabsContent value="agents" className="space-y-4 pt-5 text-[15px] text-ink-2">
             <p>Buyers' procurement agents can question the same verified ledger over MCP and get the same bounded answers a person gets on the phone.</p>
             <code className="block rounded-[12px] bg-night px-4 py-3 font-mono text-[12.5px] text-cream">POST {location.origin}/mcp · tools: list_claims, ask_compliance, get_packet</code>
-            <p>Signed packets verify against the public key at <a className="underline" href="/.well-known/sworn-keys.json">/.well-known/sworn-keys.json</a>, or in the browser at <a className="underline" href="/verify.html">/verify.html</a>.</p>
+            <p>Signed packets verify against the public key at <a className="underline" href="/.well-known/sworn-keys.json">/.well-known/sworn-keys.json</a>, or in the browser at <a className="underline" href={`/verify.html?sid=${SID}`}>/verify.html</a>.</p>
             <div className="max-h-[220px] overflow-y-auto rounded-[12px] border border-rule">
               {state?.log.slice(0, 14).map((e) => (
                 <div key={e.seq} className="grid grid-cols-[80px_1fr] gap-3 border-b border-rule px-3 py-2 text-[13px] last:border-0"><span className="font-mono text-[11px] text-ink-3">{e.hash.slice(0, 8)}</span><span>{e.summary}</span></div>

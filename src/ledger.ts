@@ -225,6 +225,15 @@ export class Ledger extends DurableObject<Env> {
     return (await this.load()).packets.find((p) => p.body.packetId === id) ?? null;
   }
 
+  // Router role: maps a Bolna execution id to the visitor sandbox that started it.
+  async setRoute(executionId: string, sid: string) {
+    await this.ctx.storage.put(`route:${executionId}`, sid);
+  }
+
+  async getRoute(executionId: string) {
+    return (await this.ctx.storage.get<string>(`route:${executionId}`)) ?? null;
+  }
+
   async publicKey() {
     const k = await this.signingKey();
     return { keys: [{ kid: k.keyId, use: "sig", alg: "EdDSA", ...k.publicJwk }] };
