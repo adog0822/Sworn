@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Verify a Sworn packet</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css" />
+  <style>
+    .verify { max-width: 860px; margin: 28px auto; }
+    .result { margin-top: 14px; padding: 14px; border-radius: var(--r); font-size: 15px; }
+    .result.ok { background: var(--ok-bg); color: var(--ok); }
+    .result.bad { background: var(--bad-bg); color: var(--bad); }
+    textarea.json { font-family: var(--mono); font-size: 12px; min-height: 260px; }
+    .steps { font-size: 14px; color: var(--ink-2); }
+    .steps div { padding: 6px 0; border-top: 1px solid var(--line); }
+  </style>
+</head>
+<body>
+  <header class="top"><div class="wrap"><a class="brand" href="/"><b>Sworn</b><span>packet verifier</span></a></div></header>
+  <main class="wrap verify stack">
+    <section class="panel">
+      <h2>Verify a signed evidence packet</h2>
+      <div class="sub">Runs entirely in your browser with WebCrypto. It recomputes the SHA-256 of the packet's canonical JSON and checks the Ed25519 signature against Sworn's published key.</div>
+      <div class="body stack">
+        <div class="row">
+          <input class="grow" id="pid" placeholder="PKT-001" />
+          <button class="btn" id="load">Load packet</button>
+        </div>
+        <textarea class="json" id="json" placeholder="…or paste a packet's JSON here"></textarea>
+        <div class="row">
+          <button class="btn primary" id="verify">Verify</button>
+          <button class="btn" id="tamper" title="Flip one verdict in the pasted JSON, then verify again">Tamper with it</button>
+        </div>
+        <div id="result"></div>
+        <div class="steps" id="steps"></div>
+      </div>
+    </section>
+  </main>
+  <script type="module">
+    const $ = (id) => document.getElementById(id);
+    const canonical = (v) => {
+      if (v === null || typeof v !== "object") return JSON.stringify(v);
+      if (Array.isArray(v)) return `[${v.map(canonical).join(",")}]`;
+      return `{${Object.entries(v).filter(([, x]) => x !== undefined).sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0)).map(([k, x]) => `${JSON.stringify(k)}:${canonical(x)}`).join(",")}}`;
+    };
+    const hex = (b) => [...new Uint8Array(b)].map((x) => x.toString(16).padStart(2, "0")).join("");
+    const fromB64url = (s) => Uint8Array.from(atob(s.replace(/-/g, "+").replace(/_/g, "/") + "===".slice((s.length + 3) % 4)), (c) => c.charCodeAt(0));
+
+    async function load(id) {
+      const r = await fetch(`/api/packets/${encodeURIComponent(id)}`);
+      if (!r.ok) return show(false, "No packet with that ID.");
+      $("json").value = JSON.stringify(await r.json(), null, 2);
+      verify();
+    }
+
+    function show(ok, msg) {
+      $("result").innerHTML = `<div class="result ${ok ? "ok" : "bad"}">${msg}</div>`;
+    }
+
+    async function verify() {
+      let sealed;
+      try { sealed = JSON.parse($("json").value); } catch { return show(false, "That isn't valid JSON."); }
+      const steps = [];
+      const digest = hex(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(canonical(sealed.body))));
+      const hashOk = digest === sealed.sha256;
+      steps.push(`Recomputed SHA-256: <span class="hash">${digest}</span> ${hashOk ? "matches" : "does NOT match"} the packet's stated hash.`);
+      const { keys } = await (await fetch("/.well-known/sworn-keys.json")).json();
+      const k = keys.find((x) => x.kid === sealed.keyId);
+      if (!k) return show(false, "The packet names a signing key Sworn didn't publish.");
+      steps.push(`Signing key <span class="hash">${k.kid}</span> from /.well-known/sworn-keys.json.`);
+      let sigOk = false;
+      try {
+        const pub = await crypto.subtle.importKey("jwk", { kty: k.kty, crv: k.crv, x: k.x }, { name: "Ed25519" }, false, ["verify"]);
+        sigOk = await crypto.subtle.verify({ name: "Ed25519" }, pub, fromB64url(sealed.signature), new TextEncoder().encode(sealed.sha256));
+      } catch (e) {
+        steps.push(`This browser could not run Ed25519 (${e.message}). Use a current Chrome, Safari or Firefox.`);
+      }
+      steps.push(`Ed25519 signature over the hash: ${sigOk ? "valid" : "invalid"}.`);
+      const b = sealed.body ?? {};
+      if (b.claims) steps.push(`${b.claims.length} claims from ${b.call?.kind} call ${String(b.call?.id).slice(0, 8)}…: ${b.claims.map((c) => `${c.id} ${c.verdict}`).join(", ")}. Transcript hash <span class="hash">${b.call?.transcriptSha256?.slice(0, 16)}…</span>`);
+      $("steps").innerHTML = steps.map((s) => `<div>${s}</div>`).join("");
+      show(hashOk && sigOk, hashOk && sigOk ? `Authentic. ${b.packetId} was issued by Sworn at ${b.issuedAt} and has not been altered.` : "Not authentic: the packet was altered or not signed by Sworn.");
+    }
+
+    $("load").onclick = () => load($("pid").value.trim());
+    $("verify").onclick = verify;
+    $("tamper").onclick = () => {
+      try {
+        const s = JSON.parse($("json").value);
+        const c = s.body.claims.find((x) => x.verdict !== "verified") ?? s.body.claims[0];
+        c.verdict = "verified";
+        $("json").value = JSON.stringify(s, null, 2);
+        verify();
+      } catch { show(false, "Load a packet first."); }
+    };
+    const pid = new URLSearchParams(location.search).get("packet");
+    if (pid) { $("pid").value = pid; load(pid); }
+  </script>
+</body>
+</html>

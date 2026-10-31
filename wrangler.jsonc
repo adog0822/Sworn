@@ -1,0 +1,21 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "sworn",
+  "main": "src/worker.ts",
+  "compatibility_date": "2026-06-01",
+  "assets": {
+    "directory": "public",
+    "binding": "ASSETS",
+    "run_worker_first": ["/api/*", "/mcp", "/.well-known/*"]
+  },
+  "durable_objects": {
+    "bindings": [{ "name": "LEDGER", "class_name": "Ledger" }]
+  },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["Ledger"] }],
+  "vars": {
+    // Filled in by `npm run setup:bolna` after the agents exist.
+    "INTERVIEWER_AGENT_ID": "84d10e8d-bdb3-4cb6-8cd1-3973e7baee44",
+    "AUDITOR_AGENT_ID": "f7194b97-efe5-4eb4-b0f8-120cc91230cd"
+  },
+  "observability": { "enabled": true }
+}
