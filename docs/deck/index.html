@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Sworn Pitch Deck</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap" rel="stylesheet" />
+<style>
+/* 16:9 slides, one per printed page. Paper ground, ink type, one amber accent; semantic red/green only for verdicts. */
+:root {
+  --paper: #f7f5f0; --card: #ffffff; --sunk: #efeadf; --ink: #1b1a17; --ink2: #4a4740; --ink3: #77736a;
+  --line: #e2dccf; --amber: #b86e0b; --ok: #1f6f47; --bad: #a8271b; --warn: #8a5a00;
+  --serif: "Source Serif 4", Georgia, serif; --sans: "Instrument Sans", system-ui, sans-serif; --mono: "JetBrains Mono", Menlo, monospace;
+}
+@page { size: 1280px 720px; margin: 0; }
+* { box-sizing: border-box; }
+html, body { margin: 0; background: #d9d4c9; font-family: var(--sans); color: var(--ink); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.slide { width: 1280px; height: 720px; margin: 24px auto; background: var(--paper); position: relative; overflow: hidden; padding: 64px 80px; display: flex; flex-direction: column; page-break-after: always; break-after: page; }
+@media print { body { background: var(--paper); } .slide { margin: 0; } }
+h1, h2, h3 { font-family: var(--serif); font-weight: 500; margin: 0; letter-spacing: -0.015em; text-wrap: balance; }
+h2 { font-size: 54px; line-height: 1.05; }
+.kicker { font-size: 15px; font-weight: 600; color: var(--amber); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 14px; }
+.foot { position: absolute; left: 80px; right: 80px; bottom: 26px; display: flex; justify-content: space-between; font-size: 12px; color: var(--ink3); }
+.src { font-size: 11.5px; color: var(--ink3); line-height: 1.45; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; }
+.mono { font-family: var(--mono); }
+.stamp { display: inline-block; font-weight: 700; font-size: 18px; letter-spacing: 0.04em; border: 3px solid currentColor; border-radius: 6px; padding: 4px 12px; transform: rotate(-6deg); }
+.bad { color: var(--bad); } .ok { color: var(--ok); } .warn { color: var(--warn); }
+.grow { flex: 1; min-width: 0; }
+svg text { font-family: var(--sans); }
+</style>
+</head>
+<body>
+
+<!-- 1. Title -->
+<section class="slide" style="flex-direction:row;align-items:center;gap:60px">
+  <div class="grow">
+    <div class="kicker">LoxeAI · Bolna Symphony Buildathon</div>
+    <h1 style="font-size:132px;line-height:0.95">Sworn</h1>
+    <p style="font-family:var(--serif);font-size:38px;line-height:1.2;margin:22px 0 0">Say it.<br>Sworn checks if it's true.</p>
+    <p style="font-size:19px;color:var(--ink2);margin:26px 0 0;max-width:470px">A voice agent that interviews the people who run security controls and checks every claim against the real systems before an auditor does.</p>
+  </div>
+  <div style="width:500px">
+    <div class="card" style="padding:26px 28px;box-shadow:0 18px 50px rgba(27,26,23,0.10)">
+      <div style="font-size:14px;color:var(--ink3)">Priya, platform lead · on a call with Sworn</div>
+      <p style="font-family:var(--serif);font-size:30px;line-height:1.25;margin:10px 0 0;font-style:italic">"MFA is enforced for everyone through Okta."</p>
+      <svg viewBox="0 0 440 54" width="100%" height="54" aria-hidden="true" style="margin:14px 0 4px">
+        <g fill="var(--ink)">
+          <rect x="0" y="22" width="5" height="10" rx="2"/><rect x="10" y="14" width="5" height="26" rx="2"/><rect x="20" y="6" width="5" height="42" rx="2"/><rect x="30" y="16" width="5" height="22" rx="2"/><rect x="40" y="10" width="5" height="34" rx="2"/><rect x="50" y="20" width="5" height="14" rx="2"/><rect x="60" y="4" width="5" height="46" rx="2"/><rect x="70" y="12" width="5" height="30" rx="2"/><rect x="80" y="18" width="5" height="18" rx="2"/><rect x="90" y="8" width="5" height="38" rx="2"/><rect x="100" y="20" width="5" height="14" rx="2"/><rect x="110" y="14" width="5" height="26" rx="2"/><rect x="120" y="22" width="5" height="10" rx="2"/>
+        </g>
+        <line x1="140" y1="27" x2="440" y2="27" stroke="var(--line)" stroke-width="2" stroke-dasharray="4 6"/>
+      </svg>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:16px">
+        <div style="font-size:16px;color:var(--ink2);line-height:1.4">IAM report: <b>jsmith-contractor</b> has console access, no MFA, and its key was used <b>4 days after</b> offboarding.</div>
+        <span class="stamp bad">NOT TRUE</span>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>sworn.loxeai-evt.workers.dev</span><span>1</span></div>
+</section>
+
+<!-- 2. Problem -->
+<section class="slide">
+  <div class="kicker">The problem</div>
+  <h2>Your best engineer is working as a translator.</h2>
+  <div style="display:flex;align-items:center;gap:28px;margin-top:44px">
+    <div class="card" style="padding:22px;width:330px">
+      <div style="font-size:14px;color:var(--ink3)">Engineers say</div>
+      <p style="font-family:var(--serif);font-size:23px;margin:8px 0 0;font-style:italic">"We nuked the stale IAM users and the SCP blocks it anyway."</p>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:14px;font-size:13px;color:var(--ink2)"><span class="mono">IAM</span>·<span class="mono">Terraform</span>·<span class="mono">PRs</span>·<span class="mono">Okta</span></div>
+    </div>
+    <svg viewBox="0 0 300 120" width="300" height="120" aria-hidden="true">
+      <path d="M10 60 L70 60 L95 30 L120 90 L145 30 L170 90 L195 30 L220 60 L290 60" fill="none" stroke="var(--bad)" stroke-width="3" stroke-linejoin="round"/>
+      <polygon points="290,60 278,53 278,67" fill="var(--bad)"/>
+      <text x="150" y="116" text-anchor="middle" font-size="15" fill="var(--ink2)">weeks of back-and-forth</text>
+    </svg>
+    <div class="card" style="padding:22px;width:330px">
+      <div style="font-size:14px;color:var(--ink3)">Auditors need</div>
+      <p style="font-family:var(--serif);font-size:23px;margin:8px 0 0;font-style:italic">"Show me the population for CC6.2 and every exception."</p>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:14px;font-size:13px;color:var(--ink2)"><span>criteria</span>·<span>populations</span>·<span>samples</span>·<span>exceptions</span></div>
+    </div>
+  </div>
+  <div style="display:flex;gap:40px;margin-top:46px">
+    <div><div style="font-family:var(--serif);font-size:64px;line-height:1">88%</div><div style="font-size:16px;color:var(--ink2);max-width:300px">of SOC 2 exams needed at least one extra round of evidence requests</div></div>
+    <div><div style="font-family:var(--serif);font-size:64px;line-height:1">71%</div><div style="font-size:16px;color:var(--ink2);max-width:300px">ended with at least one exception</div></div>
+    <div><div style="font-family:var(--serif);font-size:64px;line-height:1">#1</div><div style="font-size:16px;color:var(--ink2);max-width:340px">post-selection delay for 50% of enterprise software buyers is the security review</div></div>
+  </div>
+  <div class="foot"><span class="src">Lazarus Alliance 2026 SOC 2 benchmark (75 exams, audit-firm data); G2 2026 Buyer Behavior Report (n=1,038).</span><span>2</span></div>
+</section>
+
+<!-- 3. Opportunity -->
+<section class="slide">
+  <div class="kicker">Why now</div>
+  <h2>More frameworks, more scrutiny, and voice that finally works.</h2>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:48px">
+    <div class="card" style="padding:22px">
+      <svg viewBox="0 0 48 48" width="44" height="44" aria-hidden="true"><rect x="6" y="14" width="36" height="26" rx="3" fill="none" stroke="var(--ink)" stroke-width="2.5"/><path d="M17 14v-5h14v5" fill="none" stroke="var(--ink)" stroke-width="2.5"/></svg>
+      <h3 style="font-size:24px;margin-top:14px">AI companies sell to enterprise</h3>
+      <p style="color:var(--ink2);font-size:16px">Every enterprise deal now opens with a security review.</p>
+    </div>
+    <div class="card" style="padding:22px">
+      <div style="display:flex;flex-wrap:wrap;gap:6px">
+        <span class="mono" style="font-size:12px;background:var(--sunk);padding:3px 7px;border-radius:4px">SOC 2</span><span class="mono" style="font-size:12px;background:var(--sunk);padding:3px 7px;border-radius:4px">ISO 27001</span><span class="mono" style="font-size:12px;background:var(--sunk);padding:3px 7px;border-radius:4px">ISO 42001</span><span class="mono" style="font-size:12px;background:var(--sunk);padding:3px 7px;border-radius:4px">EU AI Act</span><span class="mono" style="font-size:12px;background:var(--sunk);padding:3px 7px;border-radius:4px">DPDP</span><span class="mono" style="font-size:12px;background:var(--sunk);padding:3px 7px;border-radius:4px">FedRAMP 20x</span>
+      </div>
+      <h3 style="font-size:24px;margin-top:14px">Frameworks multiply</h3>
+      <p style="color:var(--ink2);font-size:16px">Each one asks the same questions in a different dialect.</p>
+    </div>
+    <div class="card" style="padding:22px">
+      <span class="stamp bad" style="font-size:14px">FABRICATED?</span>
+      <h3 style="font-size:24px;margin-top:16px">Trust in AI compliance cracked</h3>
+      <p style="color:var(--ink2);font-size:16px">2026's evidence-fabrication allegations against an AI compliance startup left auditors wanting proof, not prose.</p>
+    </div>
+    <div class="card" style="padding:22px">
+      <div style="font-family:var(--serif);font-size:44px;line-height:1">200k+</div>
+      <h3 style="font-size:24px;margin-top:10px">Voice agents are production-ready</h3>
+      <p style="color:var(--ink2);font-size:16px">Bolna runs 200,000+ calls a day in 10+ languages.</p>
+    </div>
+  </div>
+  <div class="foot"><span class="src">Delve allegations, Mar 2026 (company denies); Bolna/TechCrunch, Jan 2026.</span><span>3</span></div>
+</section>
+
+<!-- 4. Solution -->
+<section class="slide">
+  <div class="kicker">The solution</div>
+  <h2>Sworn interviews, checks, translates and seals.</h2>
+  <svg viewBox="-40 0 1160 300" width="1120" height="290" style="margin-top:40px" aria-label="Sworn pipeline">
+    <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--ink3)"/></marker></defs>
+    <g font-size="15" fill="var(--ink2)">
+      <g transform="translate(0,40)">
+        <circle cx="70" cy="70" r="64" fill="var(--ink)"/><path d="M70 92a14 14 0 0 0 14-14V50a14 14 0 1 0-28 0v28a14 14 0 0 0 14 14Zm24-14a24 24 0 0 1-48 0" fill="none" stroke="var(--paper)" stroke-width="4"/>
+        <text x="70" y="168" text-anchor="middle" font-size="22" style="font-family:'Source Serif 4',Georgia,serif" fill="var(--ink)">Listen</text>
+        <text x="70" y="192" text-anchor="middle">calls the owner at</text><text x="70" y="211" text-anchor="middle">quarter end or on drift</text>
+      </g>
+      <line x1="146" y1="110" x2="214" y2="110" stroke="var(--ink3)" stroke-width="2" marker-end="url(#ar)"/>
+      <g transform="translate(222,40)">
+        <circle cx="70" cy="70" r="64" fill="var(--card)" stroke="var(--line)" stroke-width="2"/><text x="70" y="78" text-anchor="middle" style="font-family:'JetBrains Mono',Menlo,monospace" font-size="15" fill="var(--ink)">{claim}</text>
+        <text x="70" y="168" text-anchor="middle" font-size="22" style="font-family:'Source Serif 4',Georgia,serif" fill="var(--ink)">Type</text>
+        <text x="70" y="192" text-anchor="middle">each statement becomes</text><text x="70" y="211" text-anchor="middle">a typed claim</text>
+      </g>
+      <line x1="368" y1="110" x2="436" y2="110" stroke="var(--ink3)" stroke-width="2" marker-end="url(#ar)"/>
+      <g transform="translate(444,40)">
+        <circle cx="70" cy="70" r="64" fill="var(--card)" stroke="var(--line)" stroke-width="2"/><circle cx="64" cy="64" r="22" fill="none" stroke="var(--ink)" stroke-width="4"/><line x1="80" y1="80" x2="98" y2="98" stroke="var(--ink)" stroke-width="5" stroke-linecap="round"/>
+        <text x="70" y="168" text-anchor="middle" font-size="22" style="font-family:'Source Serif 4',Georgia,serif" fill="var(--ink)">Verify</text>
+        <text x="70" y="192" text-anchor="middle">against IAM, Okta,</text><text x="70" y="211" text-anchor="middle">GitHub, tickets</text>
+      </g>
+      <line x1="590" y1="110" x2="658" y2="110" stroke="var(--ink3)" stroke-width="2" marker-end="url(#ar)"/>
+      <g transform="translate(666,40)">
+        <circle cx="70" cy="70" r="64" fill="var(--card)" stroke="var(--bad)" stroke-width="2.5"/><text x="70" y="64" text-anchor="middle" font-size="15" fill="var(--bad)" font-weight="600">"Is that</text><text x="70" y="84" text-anchor="middle" font-size="15" fill="var(--bad)" font-weight="600">expected?"</text>
+        <text x="70" y="168" text-anchor="middle" font-size="22" style="font-family:'Source Serif 4',Georgia,serif" fill="var(--ink)">Push back</text>
+        <text x="70" y="192" text-anchor="middle">asks what an auditor</text><text x="70" y="211" text-anchor="middle">would ask, live</text>
+      </g>
+      <line x1="812" y1="110" x2="880" y2="110" stroke="var(--ink3)" stroke-width="2" marker-end="url(#ar)"/>
+      <g transform="translate(888,40)">
+        <circle cx="70" cy="70" r="64" fill="var(--amber)"/><rect x="50" y="52" width="40" height="32" rx="5" fill="none" stroke="#fff" stroke-width="4"/><path d="M58 52v-8a12 12 0 0 1 24 0v8" fill="none" stroke="#fff" stroke-width="4"/>
+        <text x="70" y="168" text-anchor="middle" font-size="22" style="font-family:'Source Serif 4',Georgia,serif" fill="var(--ink)">Translate + seal</text>
+        <text x="70" y="192" text-anchor="middle">every framework's dialect,</text><text x="70" y="211" text-anchor="middle">signed and re-checked</text>
+      </g>
+    </g>
+  </svg>
+  <p style="font-size:20px;color:var(--ink2);margin:8px 0 0">When a system changes later, every claim re-verifies. If something someone said stops being true, Sworn calls them back.</p>
+  <div class="foot"><span>Voice: Bolna (STT → LLM → TTS, live tool calls)</span><span>4</span></div>
+</section>
+
+<!-- 5. Demo -->
+<section class="slide">
+  <div class="kicker">The demo moment</div>
+  <h2>One forgotten account broke three statements.</h2>
+  <svg viewBox="0 0 1120 360" width="1120" height="360" style="margin-top:28px" aria-label="Three claims traced to one account">
+    <g font-size="17">
+      <g transform="translate(0,10)"><rect width="390" height="92" rx="10" fill="var(--card)" stroke="var(--line)"/><text x="20" y="34" fill="var(--ink3)" font-size="14">Access review</text><text x="20" y="66" style="font-family:'Source Serif 4',Georgia,serif" font-size="21" font-style="italic" fill="var(--ink)">"Raj signed off in Linear."</text><text x="300" y="36" fill="var(--warn)" font-weight="700" font-size="15">NOT QUITE</text></g>
+      <g transform="translate(0,134)"><rect width="390" height="92" rx="10" fill="var(--card)" stroke="var(--line)"/><text x="20" y="34" fill="var(--ink3)" font-size="14">Removing people who left</text><text x="20" y="66" style="font-family:'Source Serif 4',Georgia,serif" font-size="21" font-style="italic" fill="var(--ink)">"We nuked three stale accounts."</text><text x="300" y="36" fill="var(--bad)" font-weight="700" font-size="15">NOT TRUE</text></g>
+      <g transform="translate(0,258)"><rect width="390" height="92" rx="10" fill="var(--card)" stroke="var(--line)"/><text x="20" y="34" fill="var(--ink3)" font-size="14">Two-step login</text><text x="20" y="66" style="font-family:'Source Serif 4',Georgia,serif" font-size="21" font-style="italic" fill="var(--ink)">"MFA's on for everyone."</text><text x="300" y="36" fill="var(--bad)" font-weight="700" font-size="15">NOT TRUE</text></g>
+      <path d="M390 56 C520 56 520 180 600 180" fill="none" stroke="var(--bad)" stroke-width="2.5"/>
+      <path d="M390 180 L600 180" fill="none" stroke="var(--bad)" stroke-width="2.5"/>
+      <path d="M390 304 C520 304 520 180 600 180" fill="none" stroke="var(--bad)" stroke-width="2.5"/>
+      <g transform="translate(600,118)"><rect width="520" height="124" rx="10" fill="var(--ink)"/><text x="26" y="42" style="font-family:'JetBrains Mono',Menlo,monospace" font-size="20" fill="#fff">jsmith-contractor</text><text x="26" y="74" fill="#e9e4d8" font-size="17">Offboarded in Okta, still live in AWS IAM.</text><text x="26" y="100" fill="#e9e4d8" font-size="17">Console access, no MFA, key used 4 days later.</text></g>
+    </g>
+  </svg>
+  <p style="font-size:20px;color:var(--ink2);margin:6px 0 0">Sworn caught it on the call, logged Priya's fix, re-checked when she made it, and called her back when someone else broke it.</p>
+  <div class="foot"><span>Try it: sworn.loxeai-evt.workers.dev (browser call or 60-second sample)</span><span>5</span></div>
+</section>
+
+<!-- 6. Secret sauce -->
+<section class="slide">
+  <div class="kicker">The secret sauce</div>
+  <h2>Typed claims, not text.</h2>
+  <div style="display:flex;gap:40px;margin-top:30px;align-items:center">
+    <svg viewBox="0 0 660 420" width="660" height="420" aria-label="One claim rendered into many dialects">
+      <g stroke="var(--line)" stroke-width="2">
+        <line x1="330" y1="210" x2="90" y2="50"/><line x1="330" y1="210" x2="330" y2="30"/><line x1="330" y1="210" x2="570" y2="50"/>
+        <line x1="330" y1="210" x2="60" y2="210"/><line x1="330" y1="210" x2="600" y2="210"/>
+        <line x1="330" y1="210" x2="90" y2="370"/><line x1="330" y1="210" x2="330" y2="392"/><line x1="330" y1="210" x2="570" y2="370"/>
+      </g>
+      <g font-size="15" text-anchor="middle">
+        <g transform="translate(90,50)"><rect x="-70" y="-20" width="140" height="40" rx="8" fill="var(--card)" stroke="var(--line)"/><text y="5" fill="var(--ink)">SOC 2 CC6.1</text></g>
+        <g transform="translate(330,30)"><rect x="-70" y="-20" width="140" height="40" rx="8" fill="var(--card)" stroke="var(--line)"/><text y="5" fill="var(--ink)">ISO A.8.5</text></g>
+        <g transform="translate(570,50)"><rect x="-70" y="-20" width="140" height="40" rx="8" fill="var(--card)" stroke="var(--line)"/><text y="5" fill="var(--ink)">NIST IA-2(1)</text></g>
+        <g transform="translate(60,210)"><rect x="-60" y="-20" width="120" height="40" rx="8" fill="var(--card)" stroke="var(--line)"/><text y="5" fill="var(--ink)">PCI 8.4.2</text></g>
+        <g transform="translate(600,210)"><rect x="-60" y="-20" width="120" height="40" rx="8" fill="var(--card)" stroke="var(--line)"/><text y="5" fill="var(--ink)">HIPAA 312(d)</text></g>
+        <g transform="translate(90,370)"><rect x="-70" y="-20" width="140" height="40" rx="8" fill="var(--card)" stroke="var(--line)"/><text y="5" fill="var(--ink)">FedRAMP KSI</text></g>
+        <g transform="translate(330,392)"><rect x="-70" y="-20" width="140" height="40" rx="8" fill="var(--card)" stroke="var(--line)"/><text y="5" fill="var(--ink)">Buyer answer</text></g>
+        <g transform="translate(570,370)"><rect x="-70" y="-20" width="140" height="40" rx="8" fill="var(--card)" stroke="var(--line)"/><text y="5" fill="var(--ink)">Board line</text></g>
+      </g>
+      <g transform="translate(330,210)" text-anchor="middle"><rect x="-140" y="-62" width="280" height="124" rx="12" fill="var(--ink)"/><text y="-28" style="font-family:'JetBrains Mono',Menlo,monospace" font-size="15" fill="#e9e4d8">kind: mfa.enforced</text><text y="-4" style="font-family:'JetBrains Mono',Menlo,monospace" font-size="15" fill="#e9e4d8">scope: everyone</text><text y="20" style="font-family:'JetBrains Mono',Menlo,monospace" font-size="15" fill="#e9e4d8">systems: okta, aws</text><text y="44" style="font-family:'JetBrains Mono',Menlo,monospace" font-size="15" fill="#f0b45e">verdict: contradicted</text></g>
+    </svg>
+    <div class="grow" style="display:flex;flex-direction:column;gap:20px;font-size:19px">
+      <div><b>The model listens; the systems decide.</b><br><span style="color:var(--ink2)">Voice in, typed claim out, deterministic checks against real records.</span></div>
+      <div><b>Templates speak, so nothing is invented.</b><br><span style="color:var(--ink2)">Each dialect is rendered from checked facts. Inquiry is corroborated by inspection, the way audit standards require.</span></div>
+      <div><b>Signed, chained and re-checked.</b><br><span style="color:var(--ink2)">Ed25519 packets anyone can verify; claims re-verify when systems change.</span></div>
+    </div>
+  </div>
+  <div class="foot"><span class="src">PCAOB AS 1105 / AICPA AT-C 205: inquiry alone is not sufficient evidence.</span><span>6</span></div>
+</section>
+
+<!-- 7. Target market -->
+<section class="slide">
+  <div class="kicker">Target market</div>
+  <h2>Start where the audit pain is sharpest.</h2>
+  <div style="display:flex;gap:44px;align-items:center;margin-top:34px">
+    <svg viewBox="0 0 440 440" width="440" height="440" aria-label="Market rings">
+      <circle cx="220" cy="220" r="210" fill="var(--sunk)"/>
+      <circle cx="220" cy="250" r="150" fill="#e6dccb"/>
+      <circle cx="220" cy="290" r="88" fill="var(--amber)"/>
+      <text x="220" y="282" text-anchor="middle" fill="#fff" font-size="18" font-weight="600">AI and SaaS</text><text x="220" y="304" text-anchor="middle" fill="#fff" font-size="18" font-weight="600">startups</text>
+      <text x="220" y="150" text-anchor="middle" fill="var(--ink)" font-size="18" font-weight="600">vCISOs and MSSPs</text>
+      <text x="220" y="54" text-anchor="middle" fill="var(--ink)" font-size="18" font-weight="600">India's GCCs</text>
+    </svg>
+    <div class="grow" style="display:flex;flex-direction:column;gap:22px;font-size:19px">
+      <div><span style="color:var(--amber);font-weight:600">Beachhead.</span> AI and SaaS companies (20 to 500 people) going through SOC 2 Type II to close enterprise deals. Engineers are scarce; every audit hour hurts.</div>
+      <div><b>Next.</b> vCISOs and MSSPs who run compliance for many clients and can't sit in every walkthrough. LoxeAI already sells to them.</div>
+      <div><b>Then.</b> India's 2,117 global capability centers (2.36M people) running compliance for US and EU parents, in English, Hindi or Hinglish, on Bolna.</div>
+    </div>
+  </div>
+  <div class="foot"><span class="src">Nasscom-Zinnov India GCC Landscape 2026.</span><span>7</span></div>
+</section>
+
+<!-- 8. Market size -->
+<section class="slide">
+  <div class="kicker">Market size</div>
+  <h2>A fast-growing wedge inside a large market.</h2>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:44px">
+    <div class="card" style="padding:26px">
+      <div style="font-size:15px;color:var(--ink3)">GRC software (TAM)</div>
+      <div style="font-family:var(--serif);font-size:56px;line-height:1.05;margin-top:10px">$6.5–21B</div>
+      <div style="font-size:16px;color:var(--ink2);margin-top:8px">2025, depending on definition. 9 to 11% a year.</div>
+    </div>
+    <div class="card" style="padding:26px;border-color:var(--amber)">
+      <div style="font-size:15px;color:var(--amber);font-weight:600">Compliance automation + questionnaires (SAM)</div>
+      <div style="font-family:var(--serif);font-size:56px;line-height:1.05;margin-top:10px">$1.0B → $4.3B</div>
+      <div style="font-size:16px;color:var(--ink2);margin-top:8px">2025 to 2031, growing 23 to 31% a year.</div>
+    </div>
+    <div class="card" style="padding:26px">
+      <div style="font-size:15px;color:var(--ink3)">Voice AI agents (tailwind)</div>
+      <div style="font-family:var(--serif);font-size:56px;line-height:1.05;margin-top:10px">$2.5B → $35B</div>
+      <div style="font-size:16px;color:var(--ink2);margin-top:8px">2025 to 2033, 39% a year.</div>
+    </div>
+  </div>
+  <div class="card" style="padding:22px 26px;margin-top:22px;display:flex;align-items:center;gap:22px">
+    <div style="font-family:var(--serif);font-size:44px">30,000+</div>
+    <div style="font-size:18px;color:var(--ink2)">companies already pay a compliance platform (Vanta 16,000+, Drata 8,500+, Sprinto 3,000+, Scrut 2,500+). At an assumed $12k a year, that's a <b style="color:var(--ink)">$360M+</b> bottom-up starting market.</div>
+  </div>
+  <div class="foot"><span class="src">Verdantix, Mordor Intelligence (GRC, continuous compliance automation, questionnaire automation), Grand View Research (voice AI agents); vendor-reported customer counts. $12k ACV is our assumption.</span><span>8</span></div>
+</section>
+
+<!-- 9. Competitors -->
+<section class="slide">
+  <div class="kicker">Competition</div>
+  <h2>Everyone automates documents. Nobody checks what people say.</h2>
+  <div style="display:flex;gap:36px;margin-top:14px;align-items:center">
+    <svg viewBox="0 0 640 450" width="576" height="405" aria-label="Competitive map">
+      <rect x="40" y="10" width="590" height="400" fill="var(--card)" stroke="var(--line)"/>
+      <line x1="335" y1="10" x2="335" y2="410" stroke="var(--line)" stroke-dasharray="5 6"/><line x1="40" y1="210" x2="630" y2="210" stroke="var(--line)" stroke-dasharray="5 6"/>
+      <text x="335" y="440" text-anchor="middle" font-size="15" fill="var(--ink3)">reads documents  →  checks live systems</text>
+      <text x="16" y="210" text-anchor="middle" font-size="15" fill="var(--ink3)" transform="rotate(-90 16 210)">forms and dashboards  →  two-way conversation</text>
+      <g font-size="16" fill="var(--ink2)">
+        <circle cx="140" cy="300" r="7" fill="var(--ink3)"/><text x="154" y="305">SafeBase, Conveyor</text>
+        <circle cx="140" cy="350" r="7" fill="var(--ink3)"/><text x="154" y="355">Fieldguide, DataSnipper</text>
+        <circle cx="440" cy="300" r="7" fill="var(--ink3)"/><text x="454" y="305">Vanta, Drata</text>
+        <circle cx="440" cy="340" r="7" fill="var(--ink3)"/><text x="454" y="345">Sprinto, Scrut</text>
+        <circle cx="140" cy="90" r="7" fill="var(--ink3)"/><text x="154" y="95">ChatGPT, Claude chat</text>
+      </g>
+      <circle cx="520" cy="80" r="16" fill="var(--amber)"/><text x="520" y="128" text-anchor="middle" style="font-family:'Source Serif 4',Georgia,serif" font-size="26" fill="var(--ink)">Sworn</text>
+    </svg>
+    <div class="grow" style="display:flex;flex-direction:column;gap:18px;font-size:18px;color:var(--ink2)">
+      <div><b style="color:var(--ink)">Compliance platforms</b> pull system data but talk to people through forms and dashboards.</div>
+      <div><b style="color:var(--ink)">Trust centers</b> answer buyers from documents, now over MCP, but never check the claims.</div>
+      <div><b style="color:var(--ink)">Chatbots</b> rephrase words with no ground truth.</div>
+      <div><b style="color:var(--ink)">None of 25+ GRC, trust and audit vendors we reviewed ships voice.</b></div>
+    </div>
+  </div>
+  <div class="foot"><span class="src">LoxeAI competitive review, Oct 2026 (vendor sites and press).</span><span>9</span></div>
+</section>
+
+<!-- 10. Advantages -->
+<section class="slide">
+  <div class="kicker">Why we win</div>
+  <h2>Hard to copy, and it compounds.</h2>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:40px">
+    <div class="card" style="padding:22px"><h3 style="font-size:23px">An evidence engine we already built</h3><p style="color:var(--ink2);font-size:16px">LoxeAI connects AWS, Okta, Google, GitHub, HR and MDM, with reperformable checks. Sworn is a voice on top of real infrastructure.</p></div>
+    <div class="card" style="padding:22px"><h3 style="font-size:23px">Auditor-grade by design</h3><p style="color:var(--ink2);font-size:16px">LoxeAI is validated by 10+ audit firms, including Prescient Security and Linford &amp; Co. Sworn follows the evidence rules they test against.</p></div>
+    <div class="card" style="padding:22px"><h3 style="font-size:23px">A ledger that compounds</h3><p style="color:var(--ink2);font-size:16px">Every call adds verified claims and the follow-ups auditors actually ask, so each interview gets sharper.</p></div>
+    <div class="card" style="padding:22px"><h3 style="font-size:23px">The crosswalk</h3><p style="color:var(--ink2);font-size:16px">One claim, six frameworks, buyers and boards. New frameworks are new renderers, not new audits.</p></div>
+    <div class="card" style="padding:22px"><h3 style="font-size:23px">Open verification</h3><p style="color:var(--ink2);font-size:16px">Signed packets anyone can check, and an MCP endpoint ready for buyers' procurement agents.</p></div>
+    <div class="card" style="padding:22px"><h3 style="font-size:23px">Voice-native, multilingual</h3><p style="color:var(--ink2);font-size:16px">Built on Bolna from day one, ready for Hindi and Hinglish for engineers in India's GCCs.</p></div>
+  </div>
+  <div class="foot"><span class="src">LoxeAI is in paid pilots; 200+ customer interviews.</span><span>10</span></div>
+</section>
+
+<!-- 11. Team -->
+<section class="slide">
+  <div class="kicker">Team</div>
+  <h2>Builders who already ship compliance infrastructure.</h2>
+  <div style="display:flex;gap:28px;margin-top:56px">
+    <div class="card" style="padding:30px;flex:1;display:flex;gap:24px;align-items:center">
+      <div style="width:110px;height:110px;border-radius:50%;background:var(--ink);color:var(--paper);display:grid;place-items:center;font-family:var(--serif);font-size:44px;flex:none">AM</div>
+      <div><h3 style="font-size:32px">Arjav Mehta</h3><div style="color:var(--amber);font-weight:600;font-size:17px;margin-top:4px">Founder and CEO</div><p style="color:var(--ink2);font-size:17px;margin:10px 0 0">Founded LoxeAI. Northeastern University. 200+ interviews with founders, auditors and vCISOs.</p></div>
+    </div>
+    <div class="card" style="padding:30px;flex:1;display:flex;gap:24px;align-items:center">
+      <div style="width:110px;height:110px;border-radius:50%;background:var(--amber);color:#fff;display:grid;place-items:center;font-family:var(--serif);font-size:44px;flex:none">K</div>
+      <div><h3 style="font-size:32px">Karthik</h3><div style="color:var(--amber);font-weight:600;font-size:17px;margin-top:4px">Co-founder and CTO</div><p style="color:var(--ink2);font-size:17px;margin:10px 0 0">Leads LoxeAI's backend and evidence engine: connectors, checks and signed audit packages.</p></div>
+    </div>
+  </div>
+  <div class="foot"><span>LoxeAI</span><span>11</span></div>
+</section>
+
+<!-- 12. Close -->
+<section class="slide" style="justify-content:center">
+  <h2 style="font-size:76px;max-width:1000px">Compliance runs on claims.<br>Sworn makes sure they're true.</h2>
+  <div style="display:flex;gap:16px;align-items:center;margin-top:44px">
+    <span style="background:var(--amber);color:#fff;font-weight:600;font-size:22px;padding:14px 22px;border-radius:8px">Talk to it: sworn.loxeai-evt.workers.dev</span>
+  </div>
+  <p style="font-size:19px;color:var(--ink2);margin:26px 0 0">Next: real LoxeAI connectors, SSO-signed owner attestation, Hindi and Hinglish calls, and an opt-in incident scribe for regulatory clocks.</p>
+  <div class="foot"><span>Arjav Mehta and Karthik · LoxeAI</span><span>12</span></div>
+</section>
+
+</body>
+</html>
