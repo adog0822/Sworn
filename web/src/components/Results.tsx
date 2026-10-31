@@ -175,7 +175,7 @@ function Package({ claims, packet, onOpen, quarter }: { claims: Claim[]; packet?
                   <div className="flex justify-between"><span className="text-ink-2">Partly true</span><span className="font-mono">{n("partial")}</span></div>
                   <div className="flex justify-between"><span className="text-ink-2">Not true</span><span className="font-mono">{n("contradicted") + n("drifted")}</span></div>
                 </div>
-                <div className="absolute bottom-5 right-5"><Stamp mark="verified" delay={0.9} /></div>
+                <div className="absolute bottom-5 right-5"><Stamp mark="sealed" delay={0.9} /></div>
               </>
             ) : (
               <div className="space-y-2.5 pt-10">

@@ -3,13 +3,14 @@ import { motion, useReducedMotion } from "motion/react";
 import { cn } from "../lib/utils";
 import type { Claim } from "../lib/api";
 
-export type Mark = "verified" | "partial" | "contradicted" | "drifted";
+export type Mark = "verified" | "partial" | "contradicted" | "drifted" | "sealed";
 
 const MARKS: Record<Mark, { label: string; cls: string; night: string; Icon: typeof SealIcon }> = {
   verified: { label: "Verified", cls: "text-ok", night: "text-[#8fd0a6]", Icon: SealCheck },
   partial: { label: "Partly true", cls: "text-meh", night: "text-[#e9c27a]", Icon: SealIcon },
   contradicted: { label: "Not true", cls: "text-bad", night: "text-[#f3a088]", Icon: SealWarning },
   drifted: { label: "No longer true", cls: "text-drift", night: "text-[#c3a8f0]", Icon: SealWarning },
+  sealed: { label: "Sealed", cls: "text-ink", night: "text-cream", Icon: SealIcon },
 };
 
 export const markOf = (c: Pick<Claim, "verdict" | "status">): Mark =>
