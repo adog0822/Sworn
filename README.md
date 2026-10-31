@@ -58,13 +58,14 @@ Phone (Bolna /call)  ─────────┼─ Bolna voice agent ──�
                               │   (STT → LLM → TTS)  │   hash-chained log · signed packets
                               │   tools: verify_claim, resolve_claim, answer_auditor_question
                               └─ webhooks (transcript, recording) → seal packet
-Cloudflare Worker: /api/*, /mcp, /.well-known/sworn-keys.json, static UI
+Cloudflare Worker: /api/*, /mcp, /.well-known/sworn-keys.json, static UI (web/, built to dist/)
 ```
 
 - `src/core/` is pure TypeScript with no platform dependencies: `types.ts` (the interlingua), `checks.ts` (verifiers), `crosswalk.ts` (framework mappings), `render.ts` (dialects), `engine.ts` (ledger, drift, sealing), `seal.ts` (canonical JSON + Ed25519), `answer.ts` (auditor line), `replay.ts` (sample call).
 - `src/ledger.ts` is the Durable Object that serializes every mutation.
 - `src/worker.ts` routes the API, Bolna tool calls, webhooks and browser-call session minting.
 - `src/mcp.ts` is a minimal MCP server over the same ledger.
+- `web/` is the React app (Vite, Tailwind v4, shadcn/ui on Radix, Motion, Phosphor): landing, three-step onboarding, the call room, and the audit-package results.
 - `scripts/setup-bolna.mjs` creates or updates both Bolna agents (control-owner line and auditor line) with their tools and webhook.
 
 Quillfeather, the company in the demo, is fictional and its systems are seeded sample data. The voice calls, the checks, the drift detection and the signatures are real.
@@ -72,8 +73,9 @@ Quillfeather, the company in the demo, is fictional and its systems are seeded s
 ## Run it
 
 ```bash
-npm install
+npm install && npm --prefix web install
 npm test                 # 11 tests: checks, drift, rendering, replay, signing
+npm run dev:web          # React UI on :5180, API proxied to the live Worker
 ```
 
 Local secrets go in `.dev.vars` (gitignored):

@@ -1,0 +1,55 @@
+@import "tailwindcss";
+@import "@fontsource/libre-caslon-display/400.css";
+@import "@fontsource/libre-caslon-text/400.css";
+@import "@fontsource/libre-caslon-text/400-italic.css";
+@import "@fontsource/libre-caslon-text/700.css";
+@import "@fontsource-variable/schibsted-grotesk";
+@import "@fontsource/martian-mono/400.css";
+
+/* Layout concept: editorial paper surfaces for proof, a warm dark room for the call. One accent: ember. */
+@theme {
+  --font-display: "Libre Caslon Display", "Libre Caslon Text", Georgia, serif;
+  --font-serif: "Libre Caslon Text", Georgia, serif;
+  --font-sans: "Schibsted Grotesk Variable", "Schibsted Grotesk", system-ui, sans-serif;
+  --font-mono: "Martian Mono", ui-monospace, Menlo, monospace;
+
+  --color-paper: #f3eee4;
+  --color-sheet: #fbf8f2;
+  --color-ink: #1d1913;
+  --color-ink-2: #574f43;
+  --color-ink-3: #857c6d;
+  --color-rule: #e2d9c8;
+  --color-ember: #b0631a;
+  --color-ember-2: #d9893a;
+  --color-ok: #2d6a46;
+  --color-meh: #94650f;
+  --color-bad: #a2381f;
+  --color-drift: #65479c;
+
+  --color-night: #120f0b;
+  --color-night-2: #1b1712;
+  --color-night-3: #26201a;
+  --color-night-rule: #342c22;
+  --color-cream: #f1e8d9;
+  --color-cream-2: #b3a792;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@layer base {
+  html { background: var(--color-paper); color: var(--color-ink); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
+  body { margin: 0; }
+  ::selection { background: #e9c99b; }
+  :focus-visible { outline: 2px solid var(--color-ember-2); outline-offset: 3px; border-radius: 6px; }
+  button { cursor: pointer; }
+}
+
+/* Paper grain on a fixed, non-scrolling layer only. */
+.grain::after {
+  content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 60; opacity: .05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}

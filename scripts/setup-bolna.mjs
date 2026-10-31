@@ -10,8 +10,20 @@ const vars = Object.fromEntries(
 const KEY = process.env.BOLNA_API_KEY || vars.BOLNA_API_KEY;
 const TOOL_AUTH = `Bearer ${vars.TOOL_TOKEN}`;
 
-const VOICE = { provider: "elevenlabs", provider_config: { voice: "Benedict - Smooth, Polished and British", voice_id: "oaGwHLz3csUaSnc2NBD4", model: process.env.SWORN_TTS_MODEL || "eleven_v3_conversational" }, stream: true, buffer_size: 250, audio_format: "wav" };
-const EARS = { provider: "deepgram", model: "nova-3", language: "en", stream: true, encoding: "linear16", sampling_rate: 16000, endpointing: 400 };
+const VOICE = { provider: "elevenlabs", provider_config: { voice: "Benedict - Smooth, Polished and British", voice_id: "oaGwHLz3csUaSnc2NBD4", model: process.env.SWORN_TTS_MODEL || "eleven_v3_conversational" }, stream: true, buffer_size: 250, audio_format: "wav",
+  pronunciation_rules: [
+    { word: "jsmith-contractor", say_as: "J Smith contractor" },
+    { word: "svc-deploy", say_as: "S V C deploy" },
+    { word: "svc-backup", say_as: "S V C backup" },
+    { word: "tmp-admin-debug", say_as: "temp admin debug" },
+    { word: "SOC 2", say_as: "sock two" },
+    { word: "IAM", say_as: "I A M" },
+    { word: "MFA", say_as: "M F A" },
+    { word: "SEC-214", say_as: "ticket S E C two fourteen" },
+  ] };
+// Key-term prompting so jargon and names survive transcription ("Q4" was heard as "queue").
+const KEYTERMS = "Q4, Q3, quarter, access review, Okta, Linear, Jira, AWS, IAM, IAM user, MFA, two-factor, SSO, SCP, Terraform, GitHub, branch protection, pull request, PR, CI, KMS, RDS, S3, offboarding, deprovisioned, contractor, jsmith, svc-deploy, svc-backup, Raj, Priya, SOC 2, ISO 27001, auditor, exception, remediation";
+const EARS = { provider: "deepgram", model: "nova-3", language: "en", stream: true, encoding: "linear16", sampling_rate: 16000, endpointing: 450, keywords: KEYTERMS };
 const LLM = { agent_type: "simple_llm_agent", agent_flow_type: "streaming", llm_config: { provider: "openai", family: "openai", model: "gpt-4.1-mini", max_tokens: 220, temperature: 0.2 } };
 
 const execParam = { type: "string", description: "The call reference from your instructions ({execution_id}). Always pass it." };
@@ -86,9 +98,10 @@ Rules:
 3. When records agree, a light touch: for example "Lovely. The records agree with you, which is more than I can say for most people." When they disagree, stay curious, not accusing: for example "Ah. The IAM report and you have a small disagreement." Then ask who approved it, whether it covers all accounts or some, and when it will be fixed.
 4. When the engineer explains an exception or commits to a fix, call @resolve_claim with the resolution type, the account or system as subject, the owner and due date if given, and a one-sentence note in auditor language.
 5. If the engineer hesitates or says they don't know, help them: ask a concrete question, for example "Start simple: was there an access review this quarter, and who signed off?"
-6. One or two sentences per turn, one question at a time.
-7. When the statements are covered, say in one sentence what the auditor will receive, that you'll keep watching the systems and call back if anything drifts, and sign off with a little style.
-8. If asked something unrelated, deflect with wit and steer back to compliance.`;
+6. Understand engineers the way a colleague would. They say "nuked", "killed", "offboarded", "yanked access" for removing accounts; "2FA", "MFA", "Okta Verify", "YubiKeys" for MFA; "PRs", "reviews", "branch rules" for code review. Speech-to-text mishears jargon: "queue review" or "cue four" means Q4, "octa" means Okta, "I am" before "users" or "roles" means IAM. One sentence can hold several claims; check each one. If you genuinely can't tell what they meant, confirm in a few words ("The Q4 access review, right?") instead of guessing.
+7. One or two sentences per turn, one question at a time.
+8. When the statements are covered, say in one sentence what the auditor will receive, that you'll keep watching the systems and call back if anything drifts, and sign off with a little style.
+9. If asked something unrelated, deflect with wit and steer back to compliance.`;
 
 const AUDITOR_PROMPT = `${PERSONA}
 

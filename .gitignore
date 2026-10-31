@@ -7,3 +7,5 @@ node_modules/
 *.log
 .DS_Store
 bolna-agents.local.json
+dist/
+web/node_modules/
