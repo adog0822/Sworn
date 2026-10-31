@@ -39,7 +39,17 @@ export class Ledger extends DurableObject<Env> {
     if (!this.data) {
       const stored = await this.ctx.storage.get<LedgerData>("ledger");
       this.data = stored ?? (await freshLedger(new Date()));
-      if (!stored) await this.save();
+      let tokensChanged = false;
+      this.data.packetTokens ??= {};
+      for (const packet of this.data.packets) {
+        if (!this.data.packetTokens[packet.body.packetId]) {
+          this.data.packetTokens[packet.body.packetId] = [...crypto.getRandomValues(new Uint8Array(32))]
+            .map((byte) => byte.toString(16).padStart(2, "0"))
+            .join("");
+          tokensChanged = true;
+        }
+      }
+      if (!stored || tokensChanged) await this.save();
     }
     return this.data;
   }
@@ -114,6 +124,7 @@ export class Ledger extends DurableObject<Env> {
       const fresh = await freshLedger(now);
       // Signed packets and real calls are records; a demo reset never erases them.
       fresh.packets = d.packets;
+      fresh.packetTokens = d.packetTokens;
       fresh.calls = d.calls.filter((c) => c.kind !== "replay");
       fresh.version = d.version + 1;
       this.data = fresh;
@@ -134,15 +145,17 @@ export class Ledger extends DurableObject<Env> {
   async replayStep(callId: string, index: number) {
     return this.mutate(async (d, now) => {
       const r = await runReplayStep(d, callId, index, now);
+      let packetId: string | undefined;
       if (r.done) {
         const call = d.calls.find((c) => c.id === callId);
         if (call) {
           call.status = "completed";
           call.durationSec = Math.round((now.getTime() - Date.parse(call.startedAt)) / 1000);
-          await sealCall(d, callId, await this.signingKey(), now);
+          const sealed = await sealCall(d, callId, await this.signingKey(), now);
+          packetId = sealed?.body.packetId;
         }
       }
-      return r;
+      return { ...r, packetId, shareToken: packetId ? d.packetTokens[packetId] : undefined };
     });
   }
 
@@ -204,8 +217,14 @@ export class Ledger extends DurableObject<Env> {
   async webhook(payload: Record<string, unknown>) {
     return this.mutate(async (d, now) => {
       const { call, finished } = applyBolnaExecution(d, payload, now);
-      if (call && finished && call.status === "completed") await sealCall(d, call.id, await this.signingKey(), now);
-      return { ok: true, callId: call?.id, status: call?.status };
+      const sealed = call && finished && call.status === "completed"
+        ? await sealCall(d, call.id, await this.signingKey(), now)
+        : undefined;
+      return {
+        ok: true, callId: call?.id, status: call?.status,
+        packetId: sealed?.body.packetId,
+        shareToken: sealed ? d.packetTokens[sealed.body.packetId] : undefined,
+      };
     });
   }
 
@@ -232,6 +251,14 @@ export class Ledger extends DurableObject<Env> {
 
   async getRoute(executionId: string) {
     return (await this.ctx.storage.get<string>(`route:${executionId}`)) ?? null;
+  }
+
+  async setPacketRoute(token: string, packetId: string, sid: string | null) {
+    await this.ctx.storage.put(`packet:${token}`, { packetId, sid: sid ?? "" });
+  }
+
+  async getPacketRoute(token: string) {
+    return (await this.ctx.storage.get<{ packetId: string; sid: string }>(`packet:${token}`)) ?? null;
   }
 
   async publicKey() {

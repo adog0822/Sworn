@@ -50,8 +50,8 @@
     const fromB64url = (s) => Uint8Array.from(atob(s.replace(/-/g, "+").replace(/_/g, "/") + "===".slice((s.length + 3) % 4)), (c) => c.charCodeAt(0));
 
     async function load(id) {
-      const sid = new URLSearchParams(location.search).get("sid") || "";
-      const r = await fetch(`/api/packets/${encodeURIComponent(id)}${sid ? `?sid=${encodeURIComponent(sid)}` : ""}`);
+      const token = new URLSearchParams(location.search).get("token") || "";
+      const r = await fetch(`/api/packets/${encodeURIComponent(id)}?token=${encodeURIComponent(token)}`);
       if (!r.ok) return show(false, "No packet with that ID.");
       $("json").value = JSON.stringify(await r.json(), null, 2);
       verify();

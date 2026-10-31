@@ -11,6 +11,7 @@ export interface LedgerData {
   claims: Claim[];
   calls: CallRecord[];
   packets: Sealed<Packet>[];
+  packetTokens: Record<string, string>;
   callbacks: Callback[];
   log: LogEvent[];
   seq: number;
@@ -228,6 +229,9 @@ export async function sealCall(d: LedgerData, callId: string, key: SigningKey, n
   const transcript = call.transcript ?? call.turns.map((t) => `${t.role}: ${t.text}`).join("\n");
   const claims = d.claims.filter((c) => call.claimIds.includes(c.id)).map(({ input: _i, history: _h, ...rest }) => rest);
   const packetId = `PKT-${String(d.packets.length + 1).padStart(3, "0")}`;
+  const tokenBytes = crypto.getRandomValues(new Uint8Array(32));
+  const shareToken = [...tokenBytes].map((byte) => byte.toString(16).padStart(2, "0")).join("");
+  d.packetTokens[packetId] = shareToken;
   await appendLog(d, now, "packet.sealed", `${packetId}: ${claims.length} claims from call ${call.id.slice(0, 8)}`, packetId);
   const body: Packet = {
     packetId,
@@ -249,7 +253,7 @@ export async function sealCall(d: LedgerData, callId: string, key: SigningKey, n
 }
 
 export async function freshLedger(now: Date): Promise<LedgerData> {
-  const d: LedgerData = { system: seedState(now), claims: [], calls: [], packets: [], callbacks: [], log: [], seq: 0, version: 1 };
+  const d: LedgerData = { system: seedState(now), claims: [], calls: [], packets: [], packetTokens: {}, callbacks: [], log: [], seq: 0, version: 1 };
   await appendLog(d, now, "ledger.created", `Ledger opened for ${d.system.company}`);
   // Two claims from last quarter's interviews, so the auditor line has history.
   const past = new Date(now.getTime() - 41 * 86_400_000);
@@ -287,7 +291,7 @@ export function publicView(d: LedgerData) {
     },
     claims: [...d.claims].reverse().map((full) => { const { input: _i, ...c } = full; return { ...c, plain: plainSummary(full) }; }),
     calls: d.calls.map((c) => ({ ...c, to: c.to ? c.to.replace(/\d(?=\d{4})/g, "•") : undefined })),
-    packets: d.packets.map((p) => ({ packetId: p.body.packetId, issuedAt: p.body.issuedAt, sha256: p.sha256, claims: p.body.claims.length, callId: p.body.call.id })),
+    packets: d.packets.map((p) => ({ packetId: p.body.packetId, verifyToken: d.packetTokens[p.body.packetId], issuedAt: p.body.issuedAt, sha256: p.sha256, claims: p.body.claims.length, callId: p.body.call.id })),
     callbacks: d.callbacks.filter((c) => c.status === "pending"),
     log: d.log.slice(-40).reverse(),
   };

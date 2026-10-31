@@ -96,6 +96,8 @@ describe("replay + sealing", () => {
     const key = await testKey();
     const sealed = (await sealCall(d, call.id, key, NOW))!;
     expect(sealed.body.claims).toHaveLength(3);
+    expect(d.packetTokens[sealed.body.packetId]).toMatch(/^[a-f0-9]{64}$/);
+    expect(sealed.body).not.toHaveProperty("verifyToken");
     expect((await verifySealed(sealed, key.publicJwk)).ok).toBe(true);
     const tampered = JSON.parse(JSON.stringify(sealed));
     tampered.body.claims[1].verdict = "verified";

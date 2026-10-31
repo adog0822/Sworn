@@ -15,7 +15,8 @@ const DEFAULT = "quillfeather-v2";
 const ledgerFor = (env: Env, sid?: string | null) => env.LEDGER.get(env.LEDGER.idFromName(sid ? `s:${sid}` : DEFAULT));
 const ledger = (env: Env) => ledgerFor(env);
 const router = (env: Env) => env.LEDGER.get(env.LEDGER.idFromName("router"));
-const sessionOf = (req: Request, url: URL) => (req.headers.get("x-sworn-session") || url.searchParams.get("sid") || "").replace(/[^a-zA-Z0-9-]/g, "").slice(0, 40) || null;
+const sessionOf = (req: Request, url: URL, queryAllowed = false) =>
+  (req.headers.get("x-sworn-session") || (queryAllowed ? url.searchParams.get("sid") : "") || "").replace(/[^a-zA-Z0-9-]/g, "").slice(0, 40) || null;
 async function routed(env: Env, executionId?: string) {
   const id = executionId && !executionId.startsWith("%(") ? executionId : "";
   return ledgerFor(env, id ? await router(env).getRoute(id) : null);
@@ -77,18 +78,17 @@ async function startPhoneCall(req: Request, env: Env, url: URL) {
 
 // The browser SDK posts {user_data} here; kind and callback come in the query string.
 async function startWebCall(req: Request, env: Env, url: URL) {
-  const b = await body(req);
   const kind = url.searchParams.get("kind") === "auditor" ? "auditor" : "interview";
   const agentId = kind === "auditor" ? env.AUDITOR_AGENT_ID : env.INTERVIEWER_AGENT_ID;
   if (!agentId) return json({ error: "Bolna agents are not configured on this deployment." }, 503);
-  const sid = sessionOf(req, url);
+  const sid = sessionOf(req, url, true);
   const stub = ledgerFor(env, sid);
   if (!(await ledger(env).allowWebCall())) return json({ error: "The browser line is busy (hourly limit). Try the sample call." }, 429);
   const state = await stub.view();
   const personId = kind === "auditor" ? "auditor" : "priya";
   const callback = state.callbacks.find((c) => c.id === url.searchParams.get("callback"));
   const ctx = callContext(state, personId, callback ? `a claim that stopped matching your systems. ${callback.reason}` : undefined);
-  const res = await mintWebCallSession(env.BOLNA_API_KEY, agentId, { ...ctx, ...(b.user_data ?? {}) });
+  const res = await mintWebCallSession(env.BOLNA_API_KEY, agentId, ctx);
   const text = await res.text();
   if (res.ok) {
     const runId = (JSON.parse(text) as { run_id?: string }).run_id;
@@ -109,7 +109,16 @@ async function api(req: Request, env: Env, url: URL): Promise<Response> {
   const path = url.pathname;
   const method = req.method;
 
-  if (path === "/api/state" && method === "GET") return json(await stub.view());
+  if (path === "/api/state" && method === "GET") {
+    const state = await stub.view();
+    const sid = sessionOf(req, url);
+    for (const packet of state.packets) {
+      if (packet.verifyToken && !(await router(env).getPacketRoute(packet.verifyToken))) {
+        await router(env).setPacketRoute(packet.verifyToken, packet.packetId, sid);
+      }
+    }
+    return json(state);
+  }
   if (path === "/api/version" && method === "GET") return json({ version: await stub.version() });
 
   const renders = path.match(/^\/api\/claims\/(SW-\d+)\/renders$/);
@@ -137,14 +146,20 @@ async function api(req: Request, env: Env, url: URL): Promise<Response> {
   if (path === "/api/replay" && method === "POST") {
     const b = await body(req);
     if (b.action === "start") return json(await stub.replayStart());
-    return json(await stub.replayStep(String(b.callId), Number(b.index)));
+    const result = await stub.replayStep(String(b.callId), Number(b.index));
+    const sid = sessionOf(req, url);
+    if (result.packetId && result.shareToken) await router(env).setPacketRoute(result.shareToken, result.packetId, sid);
+    return json(result);
   }
   if (path === "/api/calls" && method === "POST") return startPhoneCall(req, env, url);
   if (path === "/api/web-call/session" && method === "POST") return startWebCall(req, env, url);
 
   const packet = path.match(/^\/api\/packets\/(PKT-\d+)$/);
   if (packet && method === "GET") {
-    const p = await stub.packet(packet[1]);
+    const token = url.searchParams.get("token");
+    const route = token ? await router(env).getPacketRoute(token) : null;
+    if (!route || route.packetId !== packet[1]) return json({ error: "No such packet" }, 404);
+    const p = await ledgerFor(env, route.sid || null).packet(packet[1]);
     return p ? json(p) : json({ error: "No such packet" }, 404);
   }
   if (path === "/api/verify" && method === "POST") {
@@ -169,8 +184,12 @@ async function api(req: Request, env: Env, url: URL): Promise<Response> {
   if (path === "/api/bolna/webhook" && method === "POST") {
     if (url.searchParams.get("token") !== env.WEBHOOK_TOKEN) return json({ error: "unauthorized" }, 401);
     const payload = await body(req);
-    const target = await routed(env, String(payload.execution_id ?? payload.id ?? ""));
-    return json(await target.webhook(payload));
+    const executionId = String(payload.execution_id ?? payload.id ?? "");
+    const route = executionId ? await router(env).getRoute(executionId) : null;
+    const target = ledgerFor(env, route);
+    const result = await target.webhook(payload);
+    if (result.packetId && result.shareToken) await router(env).setPacketRoute(result.shareToken, result.packetId, route);
+    return json(result);
   }
   return json({ error: "Not found" }, 404);
 }

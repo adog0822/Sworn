@@ -1,7 +1,7 @@
 import { ArrowLeft, ArrowSquareOut, CheckCircle, FileText, Headset, PhoneIncoming, ShieldCheck, Wrench, XCircle } from "@phosphor-icons/react";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
-import { api, callClaims, getRenders, SID, type Claim, type LedgerState, type Renders } from "../lib/api";
+import { api, callClaims, getRenders, type Claim, type LedgerState, type Renders } from "../lib/api";
 import { cn } from "../lib/utils";
 import { markOf, Seal, Stamp } from "./Seal";
 import { SystemChip, SystemLogo, systemKey } from "./SystemLogo";
@@ -136,7 +136,7 @@ export function Results({ state, callId, refresh, onHome, onAuditor, onCallback 
   );
 }
 
-function Package({ claims, packet, onOpen, quarter }: { claims: Claim[]; packet?: { packetId: string; sha256: string }; onOpen: () => void; quarter: string }) {
+function Package({ claims, packet, onOpen, quarter }: { claims: Claim[]; packet?: { packetId: string; verifyToken?: string; sha256: string }; onOpen: () => void; quarter: string }) {
   const n = (m: string) => claims.filter((c) => markOf(c) === m || (m === "partial" && c.verdict === "unverifiable")).length;
   return (
     <motion.section
@@ -151,7 +151,7 @@ function Package({ claims, packet, onOpen, quarter }: { claims: Claim[]; packet?
         <p className="mt-4 max-w-[46ch] text-[16.5px] leading-relaxed text-ink-2">Every claim, its checks, the recording's fingerprint and each framework's wording, sealed together so nobody can quietly edit it.</p>
         <div className="mt-7 flex flex-wrap gap-3">
           <Button onClick={onOpen}><FileText size={18} /> Open the package</Button>
-          {packet && <Button variant="outline" asChild><a href={`/verify.html?packet=${packet.packetId}&sid=${SID}`} target="_blank" rel="noopener"><ShieldCheck size={18} /> Verify the signature <ArrowSquareOut size={14} /></a></Button>}
+          {packet?.verifyToken && <Button variant="outline" asChild><a href={`/verify.html?packet=${packet.packetId}&token=${packet.verifyToken}`}><ShieldCheck size={18} /> Verify the signature <ArrowSquareOut size={14} /></a></Button>}
         </div>
         <p className="mt-4 font-mono text-[11.5px] text-ink-3">{packet ? `${packet.packetId} · sha256 ${packet.sha256.slice(0, 20)}…` : "Sealing the call record…"}</p>
       </div>

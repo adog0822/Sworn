@@ -12,7 +12,7 @@ export interface Claim {
 }
 export interface Turn { role: "agent" | "engineer" | "auditor" | "tool"; text: string; at: string }
 export interface Call { id: string; kind: "interview" | "auditor" | "replay"; status: string; personId: string; reason: string; startedAt: string; turns: Turn[]; claimIds: string[]; packetId?: string; durationSec?: number; recordingUrl?: string }
-export interface Packet { packetId: string; issuedAt: string; sha256: string; claims: number; callId: string }
+export interface Packet { packetId: string; verifyToken?: string; issuedAt: string; sha256: string; claims: number; callId: string }
 export interface Callback { id: string; claimId: string; personId: string; reason: string }
 export interface LedgerState {
   version: number; company: string; quarter: string; asOf: string; keyId: string;
@@ -24,13 +24,15 @@ export type Renders = { engineer: string; buyer: string; board: string; auditor:
 
 // A private sandbox per browser tab, so two people demoing at once never reset each other.
 export const SID = (() => {
+  const bytes = crypto.getRandomValues(new Uint8Array(16));
+  const create = () => [...bytes].map((byte) => byte.toString(16).padStart(2, "0")).join("");
   try {
     const k = "sworn-sid";
-    const v = sessionStorage.getItem(k) ?? Math.random().toString(36).slice(2, 12) + Date.now().toString(36);
+    const v = sessionStorage.getItem(k) ?? create();
     sessionStorage.setItem(k, v);
     return v;
   } catch {
-    return Math.random().toString(36).slice(2, 12);
+    return create();
   }
 })();
 
