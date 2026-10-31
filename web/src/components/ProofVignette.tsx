@@ -111,7 +111,7 @@ export function ProofVignette() {
           return (
             <div key={k} className="absolute flex flex-col items-center gap-1" style={{ left: CHIP_X, top: chipY(i) }}>
               <SystemChip k={k} size={52} lit={lit} />
-              <span className="font-mono text-[9.5px] uppercase tracking-[.14em] text-ink-3">{SYSTEM_NAME[k]}</span>
+              <span className="text-[12px] text-ink-3">{SYSTEM_NAME[k]}</span>
             </div>
           );
         })}
@@ -147,7 +147,7 @@ export function ProofVignette() {
                 transition={{ type: "spring", stiffness: 260, damping: 24 }}
                 className="flex items-start justify-between gap-4 rounded-[18px] border border-rule bg-sheet px-5 py-4"
               >
-                <p className="font-serif text-[19px] italic leading-snug text-ink">"{s.quote}"</p>
+                <p className="font-serif text-[18px] leading-snug text-ink">"{s.quote}"</p>
                 <span className="pt-1 font-mono text-[11px] text-ink-3">{s.at}</span>
               </motion.div>
             )}

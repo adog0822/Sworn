@@ -75,7 +75,7 @@ export function Results({ state, callId, refresh, onHome, onAuditor, onCallback 
                     <span className="grid size-9 shrink-0 place-items-center rounded-full bg-[#e9dfcd] font-serif text-ink-2">{claim.speaker.name[0]}</span>
                     <div>
                       <div className="text-[14px] font-medium">{claim.speaker.name}</div>
-                      <p className="font-serif text-[17px] italic">"{claim.statement}"</p>
+                      <p className="font-serif text-[17px]">"{claim.statement}"</p>
                     </div>
                   </div>
                   <h3 className="mt-7 text-[15px] font-medium">Checks</h3>
@@ -266,7 +266,7 @@ function Watching({ state, refresh, onCallback }: { state: LedgerState | null; r
         </AnimatePresence>
         {stage === "start" && (
           <div className="grid grid-cols-4 gap-3 opacity-80">
-            {["okta", "aws", "linear", "github"].map((k) => <div key={k} className="flex flex-col items-center gap-2 rounded-[18px] border border-dashed border-rule p-4"><SystemLogo k={k} size={22} /><span className="font-mono text-[10px] uppercase tracking-[.14em] text-ink-3">watching</span></div>)}
+            {["okta", "aws", "linear", "github"].map((k) => <div key={k} className="flex flex-col items-center gap-2 rounded-[18px] border border-dashed border-rule p-4"><SystemLogo k={k} size={22} /><span className="text-[12px] text-ink-3">watching</span></div>)}
           </div>
         )}
       </div>

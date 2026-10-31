@@ -1,16 +1,12 @@
 @import "tailwindcss";
-@import "@fontsource/libre-caslon-display/400.css";
-@import "@fontsource/libre-caslon-text/400.css";
-@import "@fontsource/libre-caslon-text/400-italic.css";
-@import "@fontsource/libre-caslon-text/700.css";
-@import "@fontsource-variable/schibsted-grotesk";
+@import "@fontsource-variable/archivo/wdth.css";
 @import "@fontsource/martian-mono/400.css";
 
-/* Layout concept: editorial paper surfaces for proof, a warm dark room for the call. One accent: ember. */
+/* Two typefaces: Archivo (wide cuts for headlines) and Martian Mono for data. Paper for proof, a warm dark room for the call. One accent: ember. */
 @theme {
-  --font-display: "Libre Caslon Display", "Libre Caslon Text", Georgia, serif;
-  --font-serif: "Libre Caslon Text", Georgia, serif;
-  --font-sans: "Schibsted Grotesk Variable", "Schibsted Grotesk", system-ui, sans-serif;
+  --font-display: "Archivo Variable", system-ui, sans-serif;
+  --font-serif: "Archivo Variable", system-ui, sans-serif;
+  --font-sans: "Archivo Variable", system-ui, sans-serif;
   --font-mono: "Martian Mono", ui-monospace, Menlo, monospace;
 
   --color-paper: #f3eee4;
@@ -37,6 +33,8 @@
 }
 
 @layer base {
+  .font-display { font-variation-settings: "wdth" 116; font-weight: 700; letter-spacing: -0.03em; }
+  .font-serif { font-weight: 500; }
   html { background: var(--color-paper); color: var(--color-ink); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
   body { margin: 0; }
   ::selection { background: #e9c99b; }

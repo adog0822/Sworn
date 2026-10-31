@@ -38,8 +38,7 @@ export function Onboarding({ open, onOpenChange, onStart, initialRole = "intervi
             <span key={t} className={cn("h-1 flex-1 rounded-full transition-colors duration-500", i <= step ? "bg-ember" : "bg-rule")} />
           ))}
         </div>
-        <div className="flex items-baseline justify-between px-7 pt-4">
-          <span className="font-mono text-[10.5px] uppercase tracking-[.16em] text-ink-3">{titles[step]}</span>
+        <div className="flex items-baseline justify-end px-7 pt-4">
           <button className="text-[13px] text-ink-3 underline-offset-4 hover:text-ink hover:underline" onClick={() => onStart(role)}>Skip to the call</button>
         </div>
         <div className="min-h-[430px] px-7 pb-2 pt-3">
@@ -75,9 +74,9 @@ function Why() {
       <div className="mt-8 grid items-center gap-4 sm:grid-cols-[1fr_auto_1fr]">
         <motion.div initial={reduce ? false : { opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="rounded-[18px] border border-rule bg-paper p-4">
           <div className="text-[13px] text-ink-3">Priya, on Slack</div>
-          <p className="mt-1 font-serif text-[18px] italic">"We removed everyone who left."</p>
+          <p className="mt-1 font-serif text-[18px]">"We removed everyone who left."</p>
         </motion.div>
-        <motion.span initial={reduce ? false : { opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="text-center font-mono text-[11px] uppercase tracking-[.14em] text-ink-3">6 weeks later</motion.span>
+        <motion.span initial={reduce ? false : { opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="text-center text-[14px] text-ink-3">6 weeks later</motion.span>
         <motion.div initial={reduce ? false : { opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.9 }} className="rounded-[18px] border border-bad/30 bg-[#fbefe9] p-4">
           <div className="flex items-center justify-between"><span className="text-[13px] text-ink-3">Auditor's finding</span><Stamp mark="contradicted" delay={1.2} /></div>
           <p className="mt-2 text-[15px] text-ink">A contractor who left still had AWS access.</p>
@@ -106,7 +105,7 @@ function Roles({ role, setRole }: { role: Role; setRole: (r: Role) => void }) {
             )}
           >
             <c.Icon size={34} weight="duotone" className={role === c.r ? "text-ember" : "text-ink-3"} />
-            <div className="mt-4 font-mono text-[10.5px] uppercase tracking-[.14em] text-ink-3">{c.who}</div>
+            <div className="mt-4 text-[14px] text-ink-3">{c.who}</div>
             <div className="mt-1 text-[20px] font-medium">{c.title}</div>
             <p className="mt-2 text-[15px] leading-relaxed text-ink-2">{c.body}</p>
           </button>
@@ -158,7 +157,7 @@ function Script({ role }: { role: Role }) {
         {SCRIPTS[role].map((line, i) => (
           <motion.li key={line} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.12 }} className="flex gap-4 rounded-[16px] border border-rule bg-paper/70 px-4 py-3">
             <span className="pt-1 font-mono text-[11px] text-ink-3">{i + 1}</span>
-            <span className="font-serif text-[18px] italic">"{line}"</span>
+            <span className="font-serif text-[18px]">"{line}"</span>
           </motion.li>
         ))}
       </ol>

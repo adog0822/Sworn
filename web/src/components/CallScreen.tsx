@@ -89,9 +89,9 @@ export function CallScreen({ call, state }: { call: CallApi; state: LedgerState 
           <AnimatePresence>
             {showScript && call.mode === "live" && (
               <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} className="mt-8 w-full max-w-[560px] rounded-[20px] border border-white/10 bg-white/[.04] px-6 py-5 text-center">
-                <div className="font-mono text-[10.5px] uppercase tracking-[.16em] text-cream-2">Say next</div>
+                <div className="text-[14px] text-cream-2">Say next</div>
                 <AnimatePresence mode="wait">
-                  <motion.p key={cue.line} initial={{ opacity: 0, y: 8, filter: "blur(3px)" }} animate={{ opacity: 1, y: 0, filter: "blur(0px)" }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.35 }} className="mt-2 font-serif text-[22px] italic leading-snug">
+                  <motion.p key={cue.line} initial={{ opacity: 0, y: 8, filter: "blur(3px)" }} animate={{ opacity: 1, y: 0, filter: "blur(0px)" }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.35 }} className="mt-2 font-serif text-[22px] leading-snug">
                     "{cue.line}"
                   </motion.p>
                 </AnimatePresence>
@@ -142,7 +142,6 @@ function Feed({ call, claims, cited, rec }: { call: CallApi; claims: Claim[]; ci
     <aside className="flex h-[min(78dvh,760px)] flex-col overflow-hidden rounded-[24px] border border-white/10 bg-night-2/80 shadow-[inset_0_1px_0_rgba(255,255,255,.05)] backdrop-blur-md">
       <div className="flex items-center justify-between border-b border-night-rule px-5 py-4">
         <span className="text-[15px] font-medium">Live transcript</span>
-        <span className="font-mono text-[10.5px] uppercase tracking-[.14em] text-cream-2">checks run as you talk</span>
       </div>
       <div ref={box} className="flex-1 space-y-4 overflow-y-auto px-5 py-5">
         {items.length === 0 && <p className="text-[14px] text-cream-2">Waiting for the conversation…</p>}
@@ -190,7 +189,7 @@ function ClaimBlock({ claim }: { claim: Claim }) {
   }, [shown, total]);
   return (
     <div className="ml-11 rounded-[16px] border border-white/10 bg-white/[.03] p-4">
-      <div className="font-mono text-[10.5px] uppercase tracking-[.14em] text-cream-2">{claim.plain.topic} · {claim.id}</div>
+      <div className="text-[14px] font-medium text-cream">{claim.plain.topic} <span className="font-mono text-[11px] text-cream-2">{claim.id}</span></div>
       <div className="mt-3 space-y-2">
         {claim.checks.map((k, i) => {
           const done = shown > i + 1;
@@ -219,7 +218,7 @@ function ClaimBlock({ claim }: { claim: Claim }) {
 function Cited({ claim }: { claim: Claim }) {
   return (
     <div className="ml-11 rounded-[16px] border border-white/10 bg-white/[.03] p-4">
-      <div className="font-mono text-[10.5px] uppercase tracking-[.14em] text-cream-2">Answered from {claim.id}</div>
+      <div className="text-[14px] text-cream-2">Answered from <span className="font-mono text-[12px]">{claim.id}</span></div>
       <p className="mt-2 text-[15px] text-cream">{claim.plain.text}</p>
       <p className="mt-1 text-[13px] text-cream-2">Sworn only answers auditors from records it has checked.</p>
     </div>

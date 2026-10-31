@@ -6,322 +6,320 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Martian+Mono:wght@400&family=Schibsted+Grotesk:wght@400;500;600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=Martian+Mono:wght@400&display=swap" rel="stylesheet" />
 <style>
-/* Same system as the product: paper for proof, a warm dark room for the call, one ember accent. */
+/* Two typefaces: Archivo (wide cuts for headlines) and Martian Mono for data. One accent: ember. */
 :root {
-  --paper: #f3eee4; --sheet: #fbf8f2; --sand: #ece2d1; --ink: #1d1913; --ink2: #574f43; --ink3: #857c6d; --rule: #e2d9c8;
-  --ember: #b0631a; --ember2: #d9893a; --ok: #2d6a46; --bad: #a2381f; --meh: #94650f; --night: #120f0b; --night2: #1b1712; --cream: #f1e8d9; --cream2: #b3a792;
-  --display: "Libre Caslon Display", "Libre Caslon Text", Georgia, serif; --serif: "Libre Caslon Text", Georgia, serif;
-  --sans: "Schibsted Grotesk", system-ui, sans-serif; --mono: "Martian Mono", Menlo, monospace;
+  --paper: #f3eee4; --sheet: #fbf8f2; --sand: #e9dfcc; --ink: #1d1913; --ink2: #554d41; --ink3: #857c6d; --rule: #ddd3c1;
+  --ember: #b0631a; --ember2: #e09445; --ok: #2d6a46; --bad: #a2381f; --night: #14110d; --cream: #f1e8d9; --cream2: #b3a792;
+  --sans: "Archivo", system-ui, sans-serif; --mono: "Martian Mono", Menlo, monospace;
 }
 @page { size: 1280px 720px; margin: 0; }
 * { box-sizing: border-box; }
-html, body { margin: 0; background: #cfc6b6; font-family: var(--sans); color: var(--ink); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+html, body { margin: 0; background: #cfc6b6; font-family: var(--sans); font-variation-settings: "wdth" 100; color: var(--ink); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 .slide { width: 1280px; height: 720px; margin: 24px auto; background: var(--paper); position: relative; overflow: hidden; padding: 64px 76px; display: flex; flex-direction: column; break-after: page; page-break-after: always; }
 .slide.dark { background: var(--night); color: var(--cream); }
 @media print { body { background: var(--paper); } .slide { margin: 0; } }
-h1, h2 { font-family: var(--display); font-weight: 400; margin: 0; letter-spacing: -0.01em; line-height: 1.02; text-wrap: balance; }
-h2 { font-size: 58px; }
-h3 { font-family: var(--sans); font-weight: 500; font-size: 22px; margin: 0; }
+h1, h2 { margin: 0; font-weight: 700; font-variation-settings: "wdth" 118; letter-spacing: -0.025em; line-height: 1.02; text-wrap: balance; }
+h2 { font-size: 50px; max-width: 1060px; }
 p { margin: 0; }
-.q { font-family: var(--serif); font-style: italic; }
-.mono { font-family: var(--mono); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink3); }
-.dark .mono { color: var(--cream2); }
-.foot { position: absolute; left: 76px; right: 76px; bottom: 24px; display: flex; justify-content: space-between; font-size: 12px; color: var(--ink3); }
-.dark .foot { color: var(--cream2); }
-.card { background: var(--sheet); border: 1px solid var(--rule); border-radius: 20px; }
-.stamp { display: inline-flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 13px; letter-spacing: .16em; text-transform: uppercase; border: 1.5px solid currentColor; border-radius: 6px; padding: 5px 10px; transform: rotate(-4deg); }
-.bad { color: var(--bad); } .ok { color: var(--ok); } .ember { color: var(--ember); }
-.shot { border-radius: 18px; box-shadow: 0 40px 80px -40px rgba(29,25,19,.55); display: block; }
-.grow { flex: 1; min-width: 0; }
+b { font-weight: 650; }
+.src { position: absolute; left: 76px; right: 76px; bottom: 26px; font-size: 12px; color: var(--ink3); }
+.dark .src { color: var(--cream2); }
+.mono { font-family: var(--mono); font-size: 13px; }
+.shot { border-radius: 16px; box-shadow: 0 40px 80px -40px rgba(29,25,19,.55); display: block; }
+.lead { font-size: 21px; line-height: 1.45; color: var(--ink2); }
+.quote { font-weight: 500; }
+.big { font-weight: 700; font-variation-settings: "wdth" 112; letter-spacing: -0.03em; }
 </style>
 </head>
 <body>
 
-<!-- 1. Title -->
-<section class="slide" style="flex-direction:row;align-items:center;gap:40px;padding-right:40px">
-  <div style="width:500px">
-    <h1 style="font-size:120px">Sworn</h1>
-    <p style="font-family:var(--display);font-size:46px;line-height:1.08;margin-top:26px">Say it.<br>Sworn checks if it's true.</p>
-    <p style="font-size:19px;color:var(--ink2);margin-top:28px;max-width:420px;line-height:1.5">An always-on voice agent that verifies what your team says about security against what your systems actually show.</p>
-    <p class="mono" style="margin-top:34px">LoxeAI · Bolna Symphony Buildathon</p>
+<!-- Title -->
+<section class="slide" style="flex-direction:row;align-items:center;gap:36px;padding-right:36px">
+  <div style="width:520px">
+    <h1 style="font-size:132px;font-weight:800;font-variation-settings:'wdth' 125;letter-spacing:-0.04em">Sworn</h1>
+    <p style="font-size:36px;line-height:1.1;font-weight:600;font-variation-settings:'wdth' 104;margin-top:22px;letter-spacing:-0.015em;white-space:nowrap">Say it.<br>Sworn checks if it's true.</p>
+    <p class="lead" style="margin-top:26px;max-width:440px">A voice agent that checks what your team says about security against what your systems actually show.</p>
   </div>
-  <img class="grow" src="img/vignette.jpg" alt="Sworn checking a spoken claim against Okta and AWS" style="width:640px;clip-path:inset(8px 8px 8px 8px)" />
-  <div class="foot"><span>sworn.loxeai-evt.workers.dev</span><span>1</span></div>
+  <img src="img/vignette.jpg" alt="Sworn catching a false MFA claim against the AWS IAM report" style="width:650px;clip-path:inset(8px)" />
+  <p class="src">Arjav Mehta and Karthik Kandaswamy, LoxeAI. Bolna Symphony Buildathon.</p>
 </section>
 
-<!-- 2. What it is -->
+<!-- What it is -->
 <section class="slide">
-  <p class="mono">What Sworn is</p>
-  <h2 style="margin-top:14px;max-width:1040px">An agent that never stops checking whether your compliance story is still true.</h2>
-  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:52px">
-    <div class="card" style="padding:28px">
-      <p class="mono ember">Always on</p>
-      <h3 style="margin-top:14px;font-size:26px">It starts the conversation.</h3>
-      <p style="margin-top:12px;font-size:17px;color:var(--ink2);line-height:1.5">Calls the owner of a control at quarter end, when a system changes, or when an auditor dials in. Nobody has to remember.</p>
+  <h2>Sworn checks what your team says against what your systems show, all year.</h2>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:40px;margin-top:40px">
+    <div style="border-top:3px solid var(--ember);padding-top:16px">
+      <p style="font-size:24px"><b>Always on.</b></p>
+      <p style="margin-top:8px;font-size:17px;color:var(--ink2);line-height:1.5">Sworn starts the conversation. It calls the owner of a control at quarter end, or the moment a system changes.</p>
     </div>
-    <div class="card" style="padding:28px">
-      <p class="mono ember">Continuous</p>
-      <h3 style="margin-top:14px;font-size:26px">It keeps checking.</h3>
-      <p style="margin-top:12px;font-size:17px;color:var(--ink2);line-height:1.5">Every claim is re-checked whenever Okta, AWS or GitHub change. If what someone said stops being true, Sworn calls them back.</p>
+    <div style="border-top:3px solid var(--ink);padding-top:16px">
+      <p style="font-size:24px"><b>Continuous.</b></p>
+      <p style="margin-top:8px;font-size:17px;color:var(--ink2);line-height:1.5">Claims are re-checked whenever Okta, AWS or GitHub change. If something someone said stops being true, Sworn calls them back.</p>
     </div>
-    <div class="card" style="padding:28px">
-      <p class="mono ember">Verifiable</p>
-      <h3 style="margin-top:14px;font-size:26px">It proves every answer.</h3>
-      <p style="margin-top:12px;font-size:17px;color:var(--ink2);line-height:1.5">Each answer cites the system record behind it and is sealed with a signature anyone can check. No record, no answer.</p>
+    <div style="border-top:3px solid var(--ink);padding-top:16px">
+      <p style="font-size:24px"><b>Verifiable.</b></p>
+      <p style="margin-top:8px;font-size:17px;color:var(--ink2);line-height:1.5">Every answer points to the system record behind it and carries a signature anyone can check. With no record, Sworn says so.</p>
     </div>
   </div>
-  <div class="foot"><span>Voice on Bolna · checks on live systems · signed ledger</span><span>2</span></div>
+  <img class="shot" src="img/drift.jpg" alt="Sworn re-checking a claim and calling the engineer back" style="width:1128px;height:250px;object-fit:cover;object-position:50% 58%;margin-top:36px;border:1px solid var(--rule)" />
 </section>
 
-<!-- 3. Problem -->
-<section class="slide">
-  <p class="mono">The problem</p>
-  <h2 style="margin-top:14px">The same sentence. Two very different outcomes.</h2>
-  <div style="display:grid;grid-template-columns:1.25fr 1fr;gap:22px;margin-top:40px">
-    <div class="card" style="padding:28px">
-      <p style="font-size:15px;color:var(--ink3)">How it goes today</p>
-      <div style="margin-top:18px;display:grid;grid-template-columns:96px 1fr;row-gap:18px;font-size:19px">
-        <span class="mono">Day 1</span><span class="q">"MFA is on for everyone."</span>
-        <span class="mono">Week 6</span><span>Auditor samples the IAM report</span>
-        <span class="mono">Week 7</span><span class="bad">Exception written into the SOC 2 report</span>
-        <span class="mono">Week 9</span><span class="bad">Enterprise deal waits on the fix</span>
+<!-- Problem -->
+<section class="slide" style="padding-bottom:56px">
+  <h2>Auditors find the mistake six weeks after someone says it.</h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr;margin-top:40px;border-radius:22px;overflow:hidden;border:1px solid var(--rule)">
+    <div style="background:var(--sheet);padding:30px 32px">
+      <p style="font-size:16px;color:var(--ink3)">Today</p>
+      <div style="margin-top:18px;display:grid;grid-template-columns:92px 1fr;row-gap:16px;font-size:19px">
+        <span class="mono" style="color:var(--ink3);padding-top:4px">Day 1</span><span class="quote">"MFA is on for everyone."</span>
+        <span class="mono" style="color:var(--ink3);padding-top:4px">Week 6</span><span>The auditor samples the IAM report.</span>
+        <span class="mono" style="color:var(--ink3);padding-top:4px">Week 7</span><span style="color:var(--bad)">An exception goes into the SOC 2 report.</span>
+        <span class="mono" style="color:var(--ink3);padding-top:4px">Week 9</span><span style="color:var(--bad)">The enterprise deal waits on the fix.</span>
       </div>
     </div>
-    <div style="background:var(--night);color:var(--cream);border-radius:20px;padding:28px;position:relative;overflow:hidden">
-      <div style="position:absolute;right:-80px;top:-80px;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(217,137,58,.35),transparent 65%)"></div>
-      <p style="font-size:15px;color:var(--cream2)">With Sworn on the call</p>
-      <div style="margin-top:18px;display:grid;grid-template-columns:96px 1fr;row-gap:18px;font-size:19px;position:relative">
-        <span class="mono">0:14</span><span class="q">"MFA is on for everyone."</span>
-        <span class="mono">0:15</span><span style="color:var(--ember2)">"The IAM report disagrees."</span>
-        <span class="mono">Same day</span><span style="color:#8fd0a6">Fixed, re-checked, signed</span>
+    <div style="background:var(--night);color:var(--cream);padding:30px 32px">
+      <p style="font-size:16px;color:var(--cream2)">With Sworn on the call</p>
+      <div style="margin-top:18px;display:grid;grid-template-columns:92px 1fr;row-gap:16px;font-size:19px">
+        <span class="mono" style="color:var(--cream2);padding-top:4px">0:14</span><span class="quote">"MFA is on for everyone."</span>
+        <span class="mono" style="color:var(--cream2);padding-top:4px">0:15</span><span style="color:var(--ember2)">"The IAM report disagrees."</span>
+        <span class="mono" style="color:var(--cream2);padding-top:4px">Same day</span><span style="color:#8fd0a6">Fixed and re-checked before any audit.</span>
       </div>
     </div>
   </div>
-  <div style="display:flex;gap:56px;margin-top:34px">
-    <div><div style="font-family:var(--display);font-size:56px;line-height:1">88%</div><p style="font-size:15px;color:var(--ink2);max-width:280px">of SOC 2 exams needed extra rounds of evidence requests</p></div>
-    <div><div style="font-family:var(--display);font-size:56px;line-height:1">71%</div><p style="font-size:15px;color:var(--ink2);max-width:240px">ended with at least one exception</p></div>
-    <div><div style="font-family:var(--display);font-size:56px;line-height:1">50%</div><p style="font-size:15px;color:var(--ink2);max-width:320px">of enterprise buyers say security review is their biggest delay after choosing a vendor</p></div>
+  <div style="display:flex;gap:64px;margin-top:34px;align-items:flex-start">
+    <div style="max-width:300px"><span class="big" style="font-size:54px">88%</span><p style="font-size:15px;color:var(--ink2);margin-top:4px">of SOC 2 exams in one audit firm's 2026 data needed extra rounds of evidence requests.</p></div>
+    <div style="max-width:260px"><span class="big" style="font-size:54px">71%</span><p style="font-size:15px;color:var(--ink2);margin-top:4px">of those exams ended with at least one exception.</p></div>
+    <div style="max-width:330px"><span class="big" style="font-size:54px">50%</span><p style="font-size:15px;color:var(--ink2);margin-top:4px">of enterprise software buyers name security review as their biggest delay after choosing a vendor.</p></div>
   </div>
-  <div class="foot"><span>Lazarus Alliance 2026 SOC 2 benchmark (75 exams, audit-firm data); G2 2026 Buyer Behavior Report (n=1,038).</span><span>3</span></div>
+  <p class="src">Lazarus Alliance 2026 SOC 2 benchmark (75 exams, audit-firm data). G2 2026 Buyer Behavior Report (n=1,038).</p>
 </section>
 
-<!-- 4. Why not an email -->
+<!-- Why not email -->
 <section class="slide">
-  <p class="mono">Why not just send an email?</p>
-  <h2 style="margin-top:14px">An email collects an answer. Sworn verifies one.</h2>
-  <div class="card" style="margin-top:34px;padding:8px 30px;font-size:17px">
-    <div style="display:grid;grid-template-columns:230px 1fr 1fr;gap:20px;padding:14px 0;border-bottom:1px solid var(--rule)">
-      <span></span><span class="mono">An email or form</span><span class="mono ember">Sworn</span>
+  <h2>Email can't tell you whether the answer is true.</h2>
+  <div style="margin-top:34px;font-size:17px">
+    <div style="display:grid;grid-template-columns:220px 1fr 1fr;gap:24px;padding:0 0 10px;font-size:15px;color:var(--ink3)"><span></span><span>Email or a form</span><span style="color:var(--ember);font-weight:600">Sworn</span></div>
+    <div style="display:grid;grid-template-columns:220px 1fr 1fr;gap:24px;padding:13px 0;border-top:1px solid var(--rule)"><b>Getting an answer</b><span style="color:var(--ink2)">It waits in an inbox until someone gets to it.</span><span>Sworn calls at quarter end. The call takes about 90 seconds.</span></div>
+    <div style="display:grid;grid-template-columns:220px 1fr 1fr;gap:24px;padding:13px 0;border-top:1px solid var(--rule)"><b>Checking it</b><span style="color:var(--ink2)">You get whatever was typed.</span><span>Checked against Okta, AWS, Linear and GitHub during the call.</span></div>
+    <div style="display:grid;grid-template-columns:220px 1fr 1fr;gap:24px;padding:13px 0;border-top:1px solid var(--rule)"><b>When it's wrong</b><span style="color:var(--ink2)">Someone notices weeks later and starts another thread.</span><span>Sworn says so on the spot: "The IAM report disagrees."</span></div>
+    <div style="display:grid;grid-template-columns:220px 1fr 1fr;gap:24px;padding:13px 0;border-top:1px solid var(--rule)"><b>Follow-ups</b><span style="color:var(--ink2)">One round trip per question.</span><span>It asks the auditor's follow-up while the engineer is still on the line.</span></div>
+    <div style="display:grid;grid-template-columns:220px 1fr 1fr;gap:24px;padding:13px 0;border-top:1px solid var(--rule)"><b>For the auditor</b><span style="color:var(--ink2)">A reply that someone has to rewrite.</span><span>A signed claim, already written in each framework's terms.</span></div>
+    <div style="display:grid;grid-template-columns:220px 1fr 1fr;gap:24px;padding:13px 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)"><b>Next quarter</b><span style="color:var(--ink2)">Start from scratch.</span><span>Already watching. It calls back when something changes.</span></div>
+  </div>
+  <p style="margin-top:22px;font-size:16px;color:var(--ink2);max-width:1000px;line-height:1.5">Why voice: auditors already gather evidence by interviewing people, and engineers explain far more out loud than they write down. The same ledger also answers in text, and to other agents over MCP.</p>
+</section>
+
+<!-- Why now -->
+<section class="slide" style="flex-direction:row;gap:48px;align-items:stretch">
+  <div style="flex:1;display:flex;flex-direction:column">
+    <h2 style="font-size:44px">Buyers demand proof now, and voice agents are finally good enough to collect it.</h2>
+    <div style="margin-top:34px;display:flex;flex-direction:column;gap:20px;font-size:18px;line-height:1.5">
+      <p><b>AI companies are selling to enterprises.</b> <span style="color:var(--ink2)">Those deals open with a security review.</span></p>
+      <p><b>The frameworks keep stacking up.</b> <span style="color:var(--ink2)">SOC 2, ISO 27001 and 42001, the EU AI Act, India's DPDP Act and FedRAMP 20x ask the same questions in different words.</span></p>
+      <p><b>Auditors stopped taking vendor text on faith.</b> <span style="color:var(--ink2)">After the 2026 allegations that an AI compliance startup fabricated evidence, they want records they can check.</span></p>
     </div>
-    <div style="display:grid;grid-template-columns:230px 1fr 1fr;gap:20px;padding:13px 0;border-bottom:1px solid var(--rule)"><b style="font-weight:500">Getting an answer</b><span style="color:var(--ink2)">Waits in an inbox until someone gets to it</span><span>Calls at quarter end; a 90-second conversation</span></div>
-    <div style="display:grid;grid-template-columns:230px 1fr 1fr;gap:20px;padding:13px 0;border-bottom:1px solid var(--rule)"><b style="font-weight:500">Is it true?</b><span style="color:var(--ink2)">Whatever was typed</span><span>Checked against Okta, AWS, Linear, GitHub while they talk</span></div>
-    <div style="display:grid;grid-template-columns:230px 1fr 1fr;gap:20px;padding:13px 0;border-bottom:1px solid var(--rule)"><b style="font-weight:500">When it's wrong</b><span style="color:var(--ink2)">Found weeks later, then another thread</span><span>Pushback in the same breath: "The IAM report disagrees."</span></div>
-    <div style="display:grid;grid-template-columns:230px 1fr 1fr;gap:20px;padding:13px 0;border-bottom:1px solid var(--rule)"><b style="font-weight:500">Follow-up questions</b><span style="color:var(--ink2)">One round trip per question</span><span>Asks what an auditor would ask, live</span></div>
-    <div style="display:grid;grid-template-columns:230px 1fr 1fr;gap:20px;padding:13px 0;border-bottom:1px solid var(--rule)"><b style="font-weight:500">What the auditor gets</b><span style="color:var(--ink2)">A reply someone has to translate</span><span>A signed claim in each framework's language</span></div>
-    <div style="display:grid;grid-template-columns:230px 1fr 1fr;gap:20px;padding:13px 0"><b style="font-weight:500">Next quarter</b><span style="color:var(--ink2)">Start over</span><span>Already watching; calls back when something drifts</span></div>
   </div>
-  <p style="margin-top:20px;font-size:15px;color:var(--ink2)">Voice matters because auditors already work by interview, and people explain more out loud than they ever write down. The same verified ledger also answers by text and to other agents over MCP.</p>
-  <div class="foot"><span></span><span>4</span></div>
+  <div style="width:400px;align-self:center;background:var(--night);color:var(--cream);border-radius:24px;padding:36px;display:flex;flex-direction:column;gap:56px;position:relative;overflow:hidden">
+    <div style="position:absolute;right:-90px;top:-90px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(224,148,69,.35),transparent 65%)"></div>
+    <div style="position:relative"><span style="font-size:62px;font-weight:800;font-variation-settings:'wdth' 108;letter-spacing:-0.035em;line-height:1">200,000+</span><p style="font-size:20px;margin-top:14px;line-height:1.4">calls a day already run on Bolna, in more than ten languages.</p></div>
+    <p style="font-size:13px;color:var(--cream2);position:relative">TechCrunch, Jan 2026. Delve allegations, Mar 2026 (the company denies them).</p>
+  </div>
 </section>
 
-<!-- 5. Why now -->
+<!-- The call -->
+<section class="slide dark" style="padding:52px 60px">
+  <h2 style="font-size:44px;max-width:900px;color:var(--cream)">Sworn checks each claim while the engineer is still talking.</h2>
+  <img class="shot" src="img/callroom.jpg" alt="The Sworn call room with live system checks" style="height:500px;width:auto;margin:26px auto 0;border:1px solid #342c22" />
+</section>
+
+<!-- How it works -->
 <section class="slide">
-  <p class="mono">Why now</p>
-  <h2 style="margin-top:14px;max-width:960px">More frameworks, more scrutiny, and voice that finally works.</h2>
-  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:48px">
-    <div class="card" style="padding:24px"><p class="mono ember">Demand</p><h3 style="margin-top:12px">AI companies sell to enterprise</h3><p style="margin-top:10px;color:var(--ink2);font-size:16px;line-height:1.5">Every enterprise deal now opens with a security review.</p></div>
-    <div class="card" style="padding:24px"><p class="mono ember">Load</p><h3 style="margin-top:12px">Frameworks multiply</h3><p style="margin-top:10px;color:var(--ink2);font-size:16px;line-height:1.5">SOC 2, ISO 27001 and 42001, the EU AI Act, DPDP, FedRAMP 20x. Same questions, new dialects.</p></div>
-    <div class="card" style="padding:24px"><p class="mono ember">Trust</p><h3 style="margin-top:12px">AI compliance got caught out</h3><p style="margin-top:10px;color:var(--ink2);font-size:16px;line-height:1.5">2026's evidence-fabrication allegations left auditors asking for proof, not prose.</p></div>
-    <div class="card" style="padding:24px;background:var(--night);color:var(--cream);border-color:var(--night)"><p class="mono" style="color:var(--ember2)">Voice</p><div style="font-family:var(--display);font-size:46px;line-height:1;margin-top:10px">200k+</div><p style="margin-top:10px;color:var(--cream2);font-size:16px;line-height:1.5">calls a day on Bolna, in 10+ languages.</p></div>
+  <h2>How one spoken sentence becomes a signed record.</h2>
+  <div style="margin-top:36px;font-size:19px">
+    <div style="display:grid;grid-template-columns:230px 1fr;gap:24px;padding:13px 0;border-top:1px solid var(--rule)"><b>Heard</b><span class="quote">"MFA's on for everyone."</span></div>
+    <div style="display:grid;grid-template-columns:230px 1fr;gap:24px;padding:13px 0;border-top:1px solid var(--rule)"><b>Typed</b><span><code class="mono" style="background:var(--night);color:var(--cream);padding:5px 10px;border-radius:6px">mfa.enforced, scope everyone, okta + aws</code></span></div>
+    <div style="display:grid;grid-template-columns:230px 1fr;gap:24px;padding:13px 0;border-top:1px solid var(--rule)"><b>Checked Okta</b><span style="color:var(--ink2)">41 of 41 active people use MFA.</span></div>
+    <div style="display:grid;grid-template-columns:230px 1fr;gap:24px;padding:13px 0;border-top:1px solid var(--rule)"><b>Checked AWS IAM</b><span style="color:var(--ink2)">11 of 14 users pass. <b style="color:var(--bad)">jsmith-contractor</b> left last week and has no MFA.</span></div>
+    <div style="display:grid;grid-template-columns:230px 1fr;gap:24px;padding:13px 0;border-top:1px solid var(--rule)"><b>Pushed back</b><span style="color:var(--ember)" class="quote">"Ah. The IAM report and you have a small disagreement."</span></div>
+    <div style="display:grid;grid-template-columns:230px 1fr;gap:24px;padding:13px 0;border-top:1px solid var(--rule)"><b>Translated</b><span style="color:var(--ink2)">SOC 2 CC6.1, ISO A.8.5, NIST IA-2(1), PCI 8.4.2 and HIPAA 164.312(d).</span></div>
+    <div style="display:grid;grid-template-columns:230px 1fr;gap:24px;padding:13px 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)"><b>Sealed</b><span style="color:var(--ink2)">Signed with Ed25519 when the call ends. Change one word and verification fails.</span></div>
   </div>
-  <div class="foot"><span>Delve allegations, Mar 2026 (company denies); Bolna via TechCrunch, Jan 2026.</span><span>5</span></div>
+  <p class="src">Figures from the demo company, Quillfeather, which is fictional. The checks run on its sample systems.</p>
 </section>
 
-<!-- 6. The call -->
-<section class="slide dark" style="padding:48px 60px">
-  <div style="display:flex;justify-content:space-between;align-items:flex-end">
-    <h2 style="font-size:50px;max-width:760px">On the call, every claim is checked system by system.</h2>
-    <p class="mono" style="padding-bottom:8px">Real product · sample call</p>
-  </div>
-  <img class="shot" src="img/callroom.jpg" alt="The Sworn call room with live checks" style="height:500px;width:auto;margin:24px auto 0;border:1px solid #342c22" />
-  <div class="foot" style="left:60px;right:60px"><span>Voice: Bolna (STT, LLM, TTS) with live tool calls into Sworn</span><span>6</span></div>
-</section>
-
-<!-- 7. The second after you speak -->
-<section class="slide">
-  <p class="mono">How it works</p>
-  <h2 style="margin-top:14px">What happens in the second after you speak.</h2>
-  <div style="margin-top:34px;font-size:18px">
-    <div style="display:grid;grid-template-columns:120px 210px 1fr;gap:24px;padding:12px 0;border-top:1px solid var(--rule)"><span class="mono">you speak</span><b style="font-weight:500">Heard</b><span class="q" style="font-size:21px">"MFA's on for everyone."</span></div>
-    <div style="display:grid;grid-template-columns:120px 210px 1fr;gap:24px;padding:12px 0;border-top:1px solid var(--rule)"><span class="mono">+0.3 s</span><b style="font-weight:500">Typed</b><span><code style="font-family:var(--mono);font-size:13px;background:var(--night);color:var(--cream);padding:4px 10px;border-radius:6px">mfa.enforced · everyone · okta, aws</code></span></div>
-    <div style="display:grid;grid-template-columns:120px 210px 1fr;gap:24px;padding:12px 0;border-top:1px solid var(--rule)"><span class="mono">+0.6 s</span><b style="font-weight:500">Checked Okta</b><span style="color:var(--ink2)">41 of 41 active people enrolled in MFA</span></div>
-    <div style="display:grid;grid-template-columns:120px 210px 1fr;gap:24px;padding:12px 0;border-top:1px solid var(--rule)"><span class="mono">+0.8 s</span><b style="font-weight:500">Checked AWS IAM</b><span style="color:var(--ink2)">11 of 14 pass. <b class="bad" style="font-weight:500">jsmith-contractor</b> left last week, no MFA. <span class="stamp bad" style="margin-left:10px;font-size:11px;padding:3px 8px">Not true</span></span></div>
-    <div style="display:grid;grid-template-columns:120px 210px 1fr;gap:24px;padding:12px 0;border-top:1px solid var(--rule)"><span class="mono">+1.1 s</span><b style="font-weight:500">Pushed back</b><span class="q ember" style="font-size:20px">"Ah. The IAM report and you have a small disagreement."</span></div>
-    <div style="display:grid;grid-template-columns:120px 210px 1fr;gap:24px;padding:12px 0;border-top:1px solid var(--rule)"><span class="mono">+1.4 s</span><b style="font-weight:500">Translated</b><span style="color:var(--ink2)">SOC 2 CC6.1 · ISO A.8.5 · NIST IA-2(1) · PCI 8.4.2 · HIPAA 164.312(d)</span></div>
-    <div style="display:grid;grid-template-columns:120px 210px 1fr;gap:24px;padding:12px 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)"><span class="mono">call ends</span><b style="font-weight:500">Sealed</b><span style="color:var(--ink2)">Ed25519 signature over the record's fingerprint</span></div>
-  </div>
-  <div class="foot"><span>Typical timings for the checks; voice turn-taking adds about a second.</span><span>7</span></div>
-</section>
-
-<!-- 8. Audit package -->
-<section class="slide" style="padding:56px 64px;background:var(--sand)">
-  <div style="display:flex;gap:40px;align-items:flex-start">
-    <div style="width:330px;padding-top:6px">
-      <h2 style="font-size:48px">From a conversation to an audit package.</h2>
-      <p style="margin-top:20px;font-size:17px;color:var(--ink2);line-height:1.55">Each claim with its checks, its evidence, the owner's response and every framework's wording, sealed together.</p>
-      <p style="margin-top:20px;font-size:17px;color:var(--ink2);line-height:1.55">Signing proves the record wasn't altered. The checks are what make it true.</p>
+<!-- Audit package -->
+<section class="slide" style="padding:56px 60px;background:var(--sand)">
+  <div style="display:flex;gap:36px;align-items:flex-start;height:100%">
+    <div style="width:340px;padding-top:4px">
+      <h2 style="font-size:42px">Every call ends in a signed audit package.</h2>
+      <p style="margin-top:20px;font-size:17px;color:var(--ink2);line-height:1.55">It holds each claim, the checks behind it, the owner's response and the wording for every framework.</p>
+      <p style="margin-top:16px;font-size:17px;color:var(--ink2);line-height:1.55">The signature proves nobody edited the record. The checks are what make it true.</p>
     </div>
-    <div class="grow" style="position:relative;height:600px">
-      <img class="shot" src="img/results.jpg" alt="Sworn results page" style="position:absolute;left:0;top:0;width:640px" />
+    <div style="flex:1;position:relative">
+      <img class="shot" src="img/results.jpg" alt="Sworn results page" style="position:absolute;left:0;top:0;width:620px" />
       <img class="shot" src="img/package.jpg" alt="Sworn audit package" style="position:absolute;right:0;top:250px;width:560px;border:1px solid var(--rule)" />
     </div>
   </div>
-  <div class="foot" style="left:64px;right:64px"><span>Real product screens</span><span>8</span></div>
 </section>
 
-<!-- 9. Secret sauce -->
+<!-- Secret sauce -->
 <section class="slide">
-  <p class="mono">The secret sauce</p>
-  <h2 style="margin-top:14px">Typed claims, not text.</h2>
-  <div style="display:flex;gap:44px;margin-top:30px;align-items:center">
-    <svg viewBox="0 0 640 420" width="620" height="406" aria-label="One typed claim rendered for many audiences" style="font-family:'Schibsted Grotesk',sans-serif">
-      <g stroke="#e2d9c8" stroke-width="1.5">
+  <h2>Each sentence becomes a typed claim that the systems can test.</h2>
+  <div style="display:flex;gap:48px;margin-top:26px;align-items:center">
+    <svg viewBox="0 0 640 420" width="600" height="394" aria-label="One typed claim rendered for many audiences" style="font-family:Archivo,sans-serif;flex:none">
+      <g stroke="#ddd3c1" stroke-width="1.5">
         <line x1="320" y1="210" x2="90" y2="50"/><line x1="320" y1="210" x2="320" y2="30"/><line x1="320" y1="210" x2="550" y2="50"/>
         <line x1="320" y1="210" x2="60" y2="210"/><line x1="320" y1="210" x2="580" y2="210"/>
         <line x1="320" y1="210" x2="90" y2="370"/><line x1="320" y1="210" x2="320" y2="392"/><line x1="320" y1="210" x2="550" y2="370"/>
       </g>
-      <g font-size="15" text-anchor="middle" fill="#1d1913">
-        <g transform="translate(90,50)"><rect x="-70" y="-20" width="140" height="40" rx="20" fill="#fbf8f2" stroke="#e2d9c8"/><text y="5">SOC 2 CC6.1</text></g>
-        <g transform="translate(320,30)"><rect x="-70" y="-20" width="140" height="40" rx="20" fill="#fbf8f2" stroke="#e2d9c8"/><text y="5">ISO A.8.5</text></g>
-        <g transform="translate(550,50)"><rect x="-70" y="-20" width="140" height="40" rx="20" fill="#fbf8f2" stroke="#e2d9c8"/><text y="5">NIST IA-2(1)</text></g>
-        <g transform="translate(60,210)"><rect x="-58" y="-20" width="116" height="40" rx="20" fill="#fbf8f2" stroke="#e2d9c8"/><text y="5">PCI 8.4.2</text></g>
-        <g transform="translate(580,210)"><rect x="-62" y="-20" width="124" height="40" rx="20" fill="#fbf8f2" stroke="#e2d9c8"/><text y="5">HIPAA 312(d)</text></g>
-        <g transform="translate(90,370)"><rect x="-70" y="-20" width="140" height="40" rx="20" fill="#fbf8f2" stroke="#e2d9c8"/><text y="5">FedRAMP KSI</text></g>
-        <g transform="translate(320,392)"><rect x="-70" y="-20" width="140" height="40" rx="20" fill="#fbf8f2" stroke="#e2d9c8"/><text y="5">Buyer answer</text></g>
-        <g transform="translate(550,370)"><rect x="-70" y="-20" width="140" height="40" rx="20" fill="#fbf8f2" stroke="#e2d9c8"/><text y="5">Board line</text></g>
+      <g font-size="15" text-anchor="middle" fill="#1d1913" font-weight="500">
+        <g transform="translate(90,50)"><rect x="-70" y="-20" width="140" height="40" rx="10" fill="#fbf8f2" stroke="#ddd3c1"/><text y="5">SOC 2 CC6.1</text></g>
+        <g transform="translate(320,30)"><rect x="-70" y="-20" width="140" height="40" rx="10" fill="#fbf8f2" stroke="#ddd3c1"/><text y="5">ISO A.8.5</text></g>
+        <g transform="translate(550,50)"><rect x="-70" y="-20" width="140" height="40" rx="10" fill="#fbf8f2" stroke="#ddd3c1"/><text y="5">NIST IA-2(1)</text></g>
+        <g transform="translate(60,210)"><rect x="-58" y="-20" width="116" height="40" rx="10" fill="#fbf8f2" stroke="#ddd3c1"/><text y="5">PCI 8.4.2</text></g>
+        <g transform="translate(580,210)"><rect x="-62" y="-20" width="124" height="40" rx="10" fill="#fbf8f2" stroke="#ddd3c1"/><text y="5">HIPAA 312(d)</text></g>
+        <g transform="translate(90,370)"><rect x="-70" y="-20" width="140" height="40" rx="10" fill="#fbf8f2" stroke="#ddd3c1"/><text y="5">FedRAMP KSI</text></g>
+        <g transform="translate(320,392)"><rect x="-70" y="-20" width="140" height="40" rx="10" fill="#fbf8f2" stroke="#ddd3c1"/><text y="5">Buyer answer</text></g>
+        <g transform="translate(550,370)"><rect x="-70" y="-20" width="140" height="40" rx="10" fill="#fbf8f2" stroke="#ddd3c1"/><text y="5">Board update</text></g>
       </g>
       <g transform="translate(320,210)" text-anchor="middle" style="font-family:'Martian Mono',monospace" font-size="13">
-        <rect x="-150" y="-66" width="300" height="132" rx="18" fill="#120f0b"/>
-        <text y="-30" fill="#f1e8d9">kind: mfa.enforced</text><text y="-6" fill="#f1e8d9">scope: everyone</text><text y="18" fill="#f1e8d9">systems: okta, aws</text><text y="42" fill="#d9893a">verdict: contradicted</text>
+        <rect x="-150" y="-66" width="300" height="132" rx="16" fill="#14110d"/>
+        <text y="-30" fill="#f1e8d9">kind: mfa.enforced</text><text y="-6" fill="#f1e8d9">scope: everyone</text><text y="18" fill="#f1e8d9">systems: okta, aws</text><text y="42" fill="#e09445">verdict: contradicted</text>
       </g>
     </svg>
-    <div class="grow" style="display:flex;flex-direction:column;gap:24px;font-size:18px;line-height:1.5">
-      <div><b style="font-weight:500">The model listens; the systems decide.</b><br><span style="color:var(--ink2)">Voice in, typed claim out, deterministic checks against real records.</span></div>
-      <div><b style="font-weight:500">Templates speak, so nothing is invented.</b><br><span style="color:var(--ink2)">Every version is written from checked facts. Inquiry is corroborated by inspection, as audit standards require.</span></div>
-      <div><b style="font-weight:500">One claim, every framework.</b><br><span style="color:var(--ink2)">A new framework is a new renderer, not a new audit.</span></div>
+    <div style="flex:1;display:flex;flex-direction:column;gap:28px;font-size:19px;line-height:1.5">
+      <p><b>The model listens. The systems decide.</b><br><span style="color:var(--ink2)">The language model only turns speech into a typed claim. Deterministic checks against real records decide whether it holds.</span></p>
+      <p><b>Templates write the answers.</b><br><span style="color:var(--ink2)">Every audience's version is generated from checked facts, so no version can claim more than the systems showed. Adding a framework means adding a template.</span></p>
     </div>
   </div>
-  <div class="foot"><span>PCAOB AS 1105 and AICPA AT-C 205: inquiry alone is not sufficient evidence.</span><span>9</span></div>
+  <p class="src">PCAOB AS 1105 and AICPA AT-C 205 treat inquiry alone as insufficient evidence. Sworn pairs every answer with an inspection of system records.</p>
 </section>
 
-<!-- 10. Target market -->
+<!-- Target market -->
 <section class="slide">
-  <p class="mono">Target market</p>
-  <h2 style="margin-top:14px">Start where the audit pain is sharpest.</h2>
-  <div style="display:flex;gap:50px;align-items:center;margin-top:30px">
-    <svg viewBox="0 0 420 420" width="420" height="420" aria-label="Market rings" style="font-family:'Schibsted Grotesk',sans-serif">
-      <circle cx="210" cy="210" r="200" fill="#ece2d1"/><circle cx="210" cy="240" r="142" fill="#e2d4bc"/><circle cx="210" cy="282" r="84" fill="#b0631a"/>
-      <text x="210" y="276" text-anchor="middle" fill="#fff" font-size="17" font-weight="600">AI and SaaS</text><text x="210" y="298" text-anchor="middle" fill="#fff" font-size="17" font-weight="600">startups</text>
-      <text x="210" y="148" text-anchor="middle" fill="#1d1913" font-size="17" font-weight="500">vCISOs and MSSPs</text>
-      <text x="210" y="54" text-anchor="middle" fill="#1d1913" font-size="17" font-weight="500">India's GCCs</text>
+  <h2>We start with startups heading into their first SOC 2 Type II.</h2>
+  <div style="display:flex;gap:44px;align-items:center;margin-top:30px">
+    <svg viewBox="0 0 520 420" width="500" height="404" aria-label="Market pyramid" style="font-family:Archivo,sans-serif;flex:none">
+      <polygon points="260,10 360,140 160,140" fill="#b0631a"/>
+      <polygon points="154,150 366,150 452,268 68,268" fill="#d9c7a8"/>
+      <polygon points="62,278 458,278 520,410 0,410" fill="#e9dfcc"/>
+      <text x="260" y="112" text-anchor="middle" fill="#fff" font-size="16" font-weight="700">Beachhead</text>
+      <text x="260" y="216" text-anchor="middle" fill="#1d1913" font-size="18" font-weight="600">vCISOs and MSSPs</text>
+      <text x="260" y="352" text-anchor="middle" fill="#1d1913" font-size="18" font-weight="600">India's global capability centers</text>
     </svg>
-    <div class="grow" style="display:flex;flex-direction:column;gap:26px;font-size:19px;line-height:1.5">
-      <div><b class="ember" style="font-weight:600">Beachhead.</b> AI and SaaS companies of 20 to 500 people going through SOC 2 Type II to close enterprise deals.</div>
-      <div><b style="font-weight:600">Next.</b> vCISOs and MSSPs who run compliance for many clients and can't sit in every walkthrough. LoxeAI already sells to them.</div>
-      <div><b style="font-weight:600">Then.</b> India's 2,117 global capability centers (2.36M people) running compliance for US and EU parents, in English, Hindi or Hinglish on Bolna.</div>
+    <div style="flex:1;display:flex;flex-direction:column;gap:34px;font-size:18px;line-height:1.5">
+      <p><b style="color:var(--ember)">AI and SaaS startups, 20 to 500 people.</b><br><span style="color:var(--ink2)">They need SOC 2 Type II to close enterprise deals, and their engineers are the ones answering the auditor.</span></p>
+      <p><b>vCISOs and MSSPs.</b><br><span style="color:var(--ink2)">They run compliance for dozens of clients and can't sit in on every walkthrough. LoxeAI already sells to them.</span></p>
+      <p><b>India's 2,117 global capability centers.</b><br><span style="color:var(--ink2)">2.36 million people doing compliance work for US and EU parents, often in Hindi or Hinglish, which Bolna already supports.</span></p>
     </div>
   </div>
-  <div class="foot"><span>Nasscom-Zinnov India GCC Landscape 2026.</span><span>10</span></div>
+  <p class="src">GCC figures: Nasscom-Zinnov India GCC Landscape 2026.</p>
 </section>
 
-<!-- 11. Market size -->
+<!-- Market size -->
 <section class="slide">
-  <p class="mono">Market size</p>
-  <h2 style="margin-top:14px">A fast-growing wedge inside a large market.</h2>
-  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:44px">
-    <div class="card" style="padding:28px"><p class="mono">GRC software · TAM</p><div style="font-family:var(--display);font-size:56px;line-height:1.05;margin-top:14px">$6.5–21B</div><p style="margin-top:10px;font-size:16px;color:var(--ink2)">2025, depending on definition; 9 to 11% a year.</p></div>
-    <div class="card" style="padding:28px;border-color:var(--ember)"><p class="mono ember">Compliance automation + questionnaires · SAM</p><div style="font-family:var(--display);font-size:56px;line-height:1.05;margin-top:14px">$1.0B → $4.3B</div><p style="margin-top:10px;font-size:16px;color:var(--ink2)">2025 to 2031, growing 23 to 31% a year.</p></div>
-    <div class="card" style="padding:28px;background:var(--night);color:var(--cream);border-color:var(--night)"><p class="mono" style="color:var(--ember2)">Voice AI agents · tailwind</p><div style="font-family:var(--display);font-size:56px;line-height:1.05;margin-top:14px">$2.5B → $35B</div><p style="margin-top:10px;font-size:16px;color:var(--cream2)">2025 to 2033, 39% a year.</p></div>
+  <h2>The market Sworn enters is growing 23 to 31% a year.</h2>
+  <div style="display:grid;grid-template-columns:1.25fr 1fr 1fr;margin-top:46px;border-top:1px solid var(--ink)">
+    <div style="padding:26px 32px 0 0">
+      <p style="font-size:16px;color:var(--ember);font-weight:600">Compliance automation and security questionnaires</p>
+      <p class="big" style="font-size:48px;font-weight:800;margin-top:12px;white-space:nowrap;font-variation-settings:'wdth' 100">$1.0B to $4.3B</p>
+      <p style="font-size:16px;color:var(--ink2);margin-top:6px">2025 to 2031. This is where Sworn sells first.</p>
+    </div>
+    <div style="padding:26px 32px 0;border-left:1px solid var(--rule)">
+      <p style="font-size:16px;color:var(--ink3)">GRC software overall</p>
+      <p class="big" style="font-size:36px;margin-top:22px;white-space:nowrap;font-variation-settings:'wdth' 100">$6.5B to $21B</p>
+      <p style="font-size:16px;color:var(--ink2);margin-top:6px">2025, depending on how analysts define it.</p>
+    </div>
+    <div style="padding:26px 0 0 32px;border-left:1px solid var(--rule)">
+      <p style="font-size:16px;color:var(--ink3)">Voice AI agents</p>
+      <p class="big" style="font-size:36px;margin-top:22px;white-space:nowrap;font-variation-settings:'wdth' 100">$2.5B to $35B</p>
+      <p style="font-size:16px;color:var(--ink2);margin-top:6px">2025 to 2033, growing 39% a year.</p>
+    </div>
   </div>
-  <div class="card" style="padding:24px 28px;margin-top:20px;display:flex;align-items:center;gap:26px">
-    <div style="font-family:var(--display);font-size:46px">30,000+</div>
-    <p style="font-size:18px;color:var(--ink2);line-height:1.5">companies already pay for a compliance platform (Vanta 16,000+, Drata 8,500+, Sprinto 3,000+, Scrut 2,500+). At an assumed $12k a year, that's a <b style="color:var(--ink);font-weight:600">$360M+</b> bottom-up starting market.</p>
+  <div style="margin-top:46px;display:flex;align-items:baseline;gap:26px;background:var(--night);color:var(--cream);border-radius:20px;padding:26px 32px">
+    <span class="big" style="font-size:48px;font-weight:800">$360M+</span>
+    <p style="font-size:18px;line-height:1.5;color:var(--cream2)">Bottom-up: more than 30,000 companies already pay for a compliance platform (Vanta 16,000+, Drata 8,500+, Sprinto 3,000+, Scrut 2,500+). At an assumed $12k a year each, that is the starting market.</p>
   </div>
-  <div class="foot"><span>Verdantix; Mordor Intelligence (GRC, continuous compliance, questionnaire automation); Grand View Research (voice AI agents); vendor-reported customer counts. $12k a year is our assumption.</span><span>11</span></div>
+  <p class="src">Mordor Intelligence (continuous compliance automation, questionnaire automation, GRC). Verdantix (GRC). Grand View Research (voice AI agents). Customer counts are vendor-reported. The $12k price is our assumption.</p>
 </section>
 
-<!-- 12. Competition -->
+<!-- Competition -->
 <section class="slide">
-  <p class="mono">Competition</p>
-  <h2 style="margin-top:14px;max-width:900px">Everyone automates documents. Nobody checks what people say.</h2>
+  <h2>No compliance tool checks what people say.</h2>
   <div style="display:flex;gap:40px;margin-top:22px;align-items:center">
-    <svg viewBox="0 0 620 430" width="580" height="402" aria-label="Competitive map" style="font-family:'Schibsted Grotesk',sans-serif">
-      <rect x="40" y="10" width="570" height="380" rx="18" fill="#fbf8f2" stroke="#e2d9c8"/>
-      <line x1="325" y1="10" x2="325" y2="390" stroke="#e2d9c8" stroke-dasharray="4 6"/><line x1="40" y1="200" x2="610" y2="200" stroke="#e2d9c8" stroke-dasharray="4 6"/>
-      <text x="325" y="420" text-anchor="middle" font-size="14" fill="#857c6d">reads documents → checks live systems</text>
-      <text x="16" y="200" text-anchor="middle" font-size="14" fill="#857c6d" transform="rotate(-90 16 200)">forms and dashboards → conversation</text>
-      <g font-size="16" fill="#574f43">
-        <circle cx="120" cy="290" r="6" fill="#857c6d"/><text x="134" y="295">SafeBase, Conveyor</text>
-        <circle cx="120" cy="336" r="6" fill="#857c6d"/><text x="134" y="341">Fieldguide, DataSnipper</text>
-        <circle cx="400" cy="290" r="6" fill="#857c6d"/><text x="414" y="295">Vanta, Drata</text>
-        <circle cx="400" cy="330" r="6" fill="#857c6d"/><text x="414" y="335">Sprinto, Scrut</text>
-        <circle cx="120" cy="86" r="6" fill="#857c6d"/><text x="134" y="91">ChatGPT, Claude chat</text>
-      </g>
-      <circle cx="500" cy="80" r="16" fill="#b0631a"/><text x="500" y="126" text-anchor="middle" style="font-family:'Libre Caslon Display',serif" font-size="28" fill="#1d1913">Sworn</text>
-    </svg>
-    <div class="grow" style="display:flex;flex-direction:column;gap:18px;font-size:18px;color:var(--ink2);line-height:1.5">
-      <div><b style="color:var(--ink);font-weight:500">Compliance platforms</b> pull system data but reach people through forms and dashboards.</div>
-      <div><b style="color:var(--ink);font-weight:500">Trust centers</b> answer buyers from documents, now over MCP, but never check the claims.</div>
-      <div><b style="color:var(--ink);font-weight:500">Chatbots</b> rephrase words with no ground truth.</div>
-      <div><b style="color:var(--ink);font-weight:500">None of 25+ GRC, trust and audit vendors we reviewed ships voice.</b></div>
+    <div style="position:relative;width:600px;height:420px;flex:none">
+      <div style="position:absolute;left:40px;top:0;width:560px;height:380px;background:var(--sheet);border:1px solid var(--rule);border-radius:18px"></div>
+      <div style="position:absolute;left:320px;top:0;width:1px;height:380px;border-left:1px dashed var(--rule)"></div>
+      <div style="position:absolute;left:40px;top:190px;width:560px;border-top:1px dashed var(--rule)"></div>
+      <p style="position:absolute;left:40px;top:392px;width:560px;text-align:center;font-size:14px;color:var(--ink3)">Reads documents &#8594; Checks live systems</p>
+      <p style="position:absolute;left:-150px;top:180px;width:340px;text-align:center;font-size:14px;color:var(--ink3);transform:rotate(-90deg)">Forms and dashboards &#8594; Conversation</p>
+      <div style="position:absolute;left:70px;top:46px;display:flex;align-items:center;gap:10px"><img src="img/logos/openai.png" width="34" height="34" alt="OpenAI"><img src="img/logos/claude.svg" width="34" height="34" alt="Claude"><span style="font-size:15px;color:var(--ink2)">ChatGPT, Claude</span></div>
+      <div style="position:absolute;left:70px;top:226px;display:flex;align-items:center;gap:10px"><img src="img/logos/conveyor.png" width="34" height="34" alt="Conveyor" style="border-radius:8px"><span style="font-size:15px;color:var(--ink2)">Conveyor, SafeBase</span></div>
+      <div style="position:absolute;left:70px;top:290px;display:flex;align-items:center;gap:10px"><img src="img/logos/fieldguide.png" width="34" height="34" alt="Fieldguide" style="border-radius:8px"><img src="img/logos/datasnipper.png" width="34" height="34" alt="DataSnipper" style="border-radius:8px"><span style="font-size:15px;color:var(--ink2)">Fieldguide, DataSnipper</span></div>
+      <div style="position:absolute;left:350px;top:226px;display:flex;align-items:center;gap:10px"><img src="img/logos/vanta.png" width="34" height="34" alt="Vanta" style="border-radius:8px"><img src="img/logos/drata.ico" width="34" height="34" alt="Drata" style="border-radius:8px"><span style="font-size:15px;color:var(--ink2)">Vanta, Drata</span></div>
+      <div style="position:absolute;left:350px;top:290px;display:flex;align-items:center;gap:10px"><img src="img/logos/sprinto.webp" width="34" height="34" alt="Sprinto" style="border-radius:8px"><img src="img/logos/scrut.png" width="34" height="34" alt="Scrut" style="border-radius:8px"><span style="font-size:15px;color:var(--ink2)">Sprinto, Scrut</span></div>
+      <div style="position:absolute;left:430px;top:52px;text-align:center"><div style="width:52px;height:52px;margin:0 auto;border-radius:14px;background:var(--night);color:var(--ember2);display:grid;place-items:center;font-size:28px;font-weight:800;font-variation-settings:'wdth' 120">S</div><p style="margin-top:8px;font-size:20px;font-weight:700;font-variation-settings:'wdth' 115">Sworn</p></div>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;gap:18px;font-size:18px;color:var(--ink2);line-height:1.5">
+      <p><b style="color:var(--ink)">Compliance platforms</b> pull data from systems, but they reach people through forms and dashboards.</p>
+      <p><b style="color:var(--ink)">Trust centers</b> answer buyers from documents. Some now do it over MCP, but none of them checks the claims.</p>
+      <p><b style="color:var(--ink)">Chatbots</b> can rephrase an engineer's words but can't check them.</p>
+      <p style="color:var(--ink)"><b>None of the 25+ GRC, trust and audit vendors we reviewed offers voice.</b></p>
     </div>
   </div>
-  <div class="foot"><span>LoxeAI competitive review, Oct 2026 (vendor sites and press).</span><span>12</span></div>
+  <p class="src">LoxeAI competitive review, Oct 2026 (vendor sites and press). SafeBase is now part of Drata.</p>
 </section>
 
-<!-- 13. Why we win -->
+<!-- Why we win -->
+<section class="slide" style="flex-direction:row;gap:48px;align-items:stretch">
+  <div style="width:470px;background:var(--night);color:var(--cream);border-radius:24px;padding:40px;display:flex;flex-direction:column;justify-content:space-between">
+    <h2 style="font-size:44px;color:var(--cream)">Every call makes the ledger harder to copy.</h2>
+    <p style="font-size:18px;color:var(--cream2);line-height:1.55">Each interview adds checked claims and the follow-up questions auditors actually ask. Each system change re-tests them. A competitor starting today starts with an empty ledger.</p>
+  </div>
+  <div style="flex:1;display:flex;flex-direction:column;justify-content:center;font-size:18px;line-height:1.5">
+    <div style="padding:18px 0;border-top:1px solid var(--rule)"><b>The evidence engine already exists.</b><br><span style="color:var(--ink2)">LoxeAI connects to AWS, Okta, Google, GitHub, HR systems and device management, with checks an auditor can re-run.</span></div>
+    <div style="padding:18px 0;border-top:1px solid var(--rule)"><b>Audit firms have reviewed it.</b><br><span style="color:var(--ink2)">LoxeAI is validated by 10+ audit firms, including Prescient Security and Linford &amp; Co.</span></div>
+    <div style="padding:18px 0;border-top:1px solid var(--rule)"><b>Anyone can verify a record.</b><br><span style="color:var(--ink2)">Packets are signed with a published key, and buyers' procurement agents can query the ledger over MCP.</span></div>
+    <div style="padding:18px 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)"><b>It speaks the engineer's language.</b><br><span style="color:var(--ink2)">Built on Bolna, so calls can run in Hindi or Hinglish for teams in India.</span></div>
+  </div>
+</section>
+
+<!-- Team -->
 <section class="slide">
-  <p class="mono">Why we win</p>
-  <h2 style="margin-top:14px">Hard to copy, and it compounds.</h2>
-  <div style="display:grid;grid-template-columns:1.3fr 1fr 1fr;grid-template-rows:auto auto;gap:18px;margin-top:40px">
-    <div style="grid-row:span 2;background:var(--night);color:var(--cream);border-radius:20px;padding:30px;display:flex;flex-direction:column;justify-content:space-between">
-      <div><p class="mono" style="color:var(--ember2)">The moat</p><h3 style="margin-top:14px;font-family:var(--display);font-weight:400;font-size:36px;line-height:1.1">A ledger of verified claims that gets sharper with every call.</h3></div>
-      <p style="color:var(--cream2);font-size:16px;line-height:1.5">Every interview adds checked claims and the follow-ups auditors actually ask. Every system change re-tests them.</p>
+  <h2>The team building LoxeAI.</h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;margin-top:48px">
+    <div style="display:flex;gap:30px;align-items:center">
+      <img src="img/arjav.png" alt="Arjav Mehta" style="width:180px;height:180px;object-fit:cover;clip-path:circle(46%);flex:none" />
+      <div>
+        <p class="big" style="font-size:28px;white-space:nowrap">Arjav Mehta</p>
+        <p style="font-size:18px;color:var(--ember);font-weight:600;margin-top:4px">Co-founder and CEO</p>
+        <p style="font-size:16.5px;color:var(--ink2);margin-top:14px;line-height:1.5">Northeastern University, class of 2029. BS in Finance and Data Science.</p>
+        <p style="font-size:16.5px;color:var(--ink2);margin-top:8px;line-height:1.5">TypeScript, AWS, business development, customer discovery and financial modeling.</p>
+      </div>
     </div>
-    <div class="card" style="padding:24px"><h3>An evidence engine we already built</h3><p style="margin-top:10px;color:var(--ink2);font-size:15.5px;line-height:1.5">LoxeAI connects AWS, Okta, Google, GitHub, HR and MDM, with reperformable checks.</p></div>
-    <div class="card" style="padding:24px"><h3>Auditor-grade by design</h3><p style="margin-top:10px;color:var(--ink2);font-size:15.5px;line-height:1.5">LoxeAI is validated by 10+ audit firms, including Prescient Security and Linford &amp; Co.</p></div>
-    <div class="card" style="padding:24px"><h3>Open verification</h3><p style="margin-top:10px;color:var(--ink2);font-size:15.5px;line-height:1.5">Signed packets anyone can check, and an MCP endpoint for buyers' procurement agents.</p></div>
-    <div class="card" style="padding:24px"><h3>Voice-native, multilingual</h3><p style="margin-top:10px;color:var(--ink2);font-size:15.5px;line-height:1.5">Built on Bolna, ready for Hindi and Hinglish for engineers in India's GCCs.</p></div>
-  </div>
-  <div class="foot"><span>LoxeAI is in paid pilots; 200+ customer interviews.</span><span>13</span></div>
-</section>
-
-<!-- 14. Team -->
-<section class="slide">
-  <p class="mono">Team</p>
-  <h2 style="margin-top:14px">Builders who already ship compliance infrastructure.</h2>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:56px">
-    <div class="card" style="padding:32px;display:flex;gap:26px;align-items:center">
-      <div style="width:112px;height:112px;border-radius:50%;background:var(--night);color:var(--cream);display:grid;place-items:center;font-family:var(--display);font-size:44px;flex:none">AM</div>
-      <div><h3 style="font-family:var(--display);font-weight:400;font-size:36px">Arjav Mehta</h3><p class="mono ember" style="margin-top:6px">Founder and CEO</p><p style="margin-top:12px;font-size:17px;color:var(--ink2);line-height:1.5">Founded LoxeAI. Northeastern University. 200+ interviews with founders, auditors and vCISOs.</p></div>
-    </div>
-    <div class="card" style="padding:32px;display:flex;gap:26px;align-items:center">
-      <div style="width:112px;height:112px;border-radius:50%;background:var(--ember);color:#fff;display:grid;place-items:center;font-family:var(--display);font-size:44px;flex:none">K</div>
-      <div><h3 style="font-family:var(--display);font-weight:400;font-size:36px">Karthik</h3><p class="mono ember" style="margin-top:6px">Co-founder and CTO</p><p style="margin-top:12px;font-size:17px;color:var(--ink2);line-height:1.5">Leads LoxeAI's backend and evidence engine: connectors, checks and signed audit packages.</p></div>
+    <div style="display:flex;gap:30px;align-items:center">
+      <img src="img/karthik.png" alt="Karthik Kandaswamy" style="width:180px;height:180px;object-fit:cover;clip-path:circle(46%);flex:none" />
+      <div>
+        <p class="big" style="font-size:28px;white-space:nowrap">Karthik Kandaswamy</p>
+        <p style="font-size:18px;color:var(--ember);font-weight:600;margin-top:4px">Co-founder and CTO</p>
+        <p style="font-size:16.5px;color:var(--ink2);margin-top:14px;line-height:1.5">Rensselaer Polytechnic Institute, class of 2029. Dual major in CSCE and ESCE.</p>
+        <p style="font-size:16.5px;color:var(--ink2);margin-top:8px;line-height:1.5">Python, C, C++, Java, AWS and Azure.</p>
+      </div>
     </div>
   </div>
-  <div class="foot"><span>LoxeAI</span><span>14</span></div>
+  <div style="margin-top:auto;background:var(--night);color:var(--cream);border-radius:20px;padding:26px 32px;font-size:21px;line-height:1.4">
+    Advised by the CISOs of <b style="color:var(--ember2)">PayNearMe</b> and <b style="color:var(--ember2)">MoneyGram</b>, and by the <b style="color:var(--ember2)">IDEA Venture Accelerator</b> at Northeastern.
+  </div>
 </section>
 
-<!-- 15. Close -->
+<!-- Close -->
 <section class="slide dark" style="justify-content:center">
-  <div style="position:absolute;left:-120px;top:-120px;width:620px;height:620px;border-radius:50%;background:radial-gradient(circle,rgba(176,99,26,.30),transparent 62%)"></div>
-  <h2 style="font-size:78px;max-width:1000px;position:relative">Compliance runs on claims.<br>Sworn makes sure they're true.</h2>
-  <div style="margin-top:44px;position:relative"><span style="display:inline-block;background:var(--ember);color:#fff;font-weight:500;font-size:22px;padding:16px 28px;border-radius:999px">Talk to it: sworn.loxeai-evt.workers.dev</span></div>
-  <p style="margin-top:28px;font-size:18px;color:var(--cream2);max-width:900px;line-height:1.5;position:relative">Next: real LoxeAI connectors, SSO-signed owner attestation, Hindi and Hinglish calls, and an opt-in incident scribe for regulatory clocks.</p>
-  <div class="foot"><span>Arjav Mehta and Karthik · LoxeAI</span><span>15</span></div>
+  <div style="position:absolute;left:-140px;top:-140px;width:640px;height:640px;border-radius:50%;background:radial-gradient(circle,rgba(176,99,26,.32),transparent 62%)"></div>
+  <h2 style="font-size:96px;color:var(--cream);position:relative;font-weight:800;font-variation-settings:'wdth' 122;letter-spacing:-0.04em">Talk to Sworn.</h2>
+  <div style="margin-top:36px;position:relative"><span style="display:inline-block;background:var(--ember);color:#fff;font-weight:600;font-size:24px;padding:16px 30px;border-radius:999px">sworn.loxeai-evt.workers.dev</span></div>
+  <p style="margin-top:30px;font-size:19px;color:var(--cream2);max-width:880px;line-height:1.5;position:relative">Next we connect Sworn to LoxeAI's production integrations, add owner sign-off through SSO, launch Hindi and Hinglish calls, and pilot an opt-in incident scribe that tracks regulatory deadlines.</p>
 </section>
 
 </body>

@@ -22,7 +22,7 @@ export function Landing({ state, onTalk, onWatch, onHood }: { state: LedgerState
 
       <section className="mx-auto grid max-w-[1280px] items-center gap-12 px-6 pb-20 pt-10 md:px-10 lg:grid-cols-[1fr_600px] lg:pt-16">
         <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}>
-          <h1 className="font-display text-[clamp(48px,7vw,92px)] leading-[0.98] tracking-[-0.02em]">
+          <h1 className="font-display text-[clamp(44px,5.2vw,76px)] leading-[1.0]">
             Say it.<br />Sworn checks<br />if it's true.
           </h1>
           <p className="mt-7 max-w-[30ch] text-[19px] leading-relaxed text-ink-2">
@@ -84,8 +84,8 @@ function SixWeeks() {
                 className="relative"
               >
                 <span className={`absolute -left-[31px] top-1.5 size-2.5 rounded-full ${i >= 2 ? "bg-bad" : "bg-ink-3"}`} />
-                <div className="font-mono text-[11px] uppercase tracking-[.14em] text-ink-3">{s.when}</div>
-                <div className={`mt-1 text-[18px] ${s.tone} ${i === 0 ? "font-serif italic" : ""}`}>{s.what}</div>
+                <div className="font-mono text-[12px] text-ink-3">{s.when}</div>
+                <div className={`mt-1 text-[18px] ${s.tone} ${i === 0 ? "font-serif" : ""}`}>{s.what}</div>
               </motion.li>
             ))}
           </ol>
@@ -104,8 +104,8 @@ function SixWeeks() {
                 className="relative"
               >
                 <span className={`absolute -left-[31px] top-1.5 size-2.5 rounded-full ${i === 2 ? "bg-[#5fae7d]" : "bg-ember-2"}`} />
-                <div className="font-mono text-[11px] uppercase tracking-[.14em] text-cream-2">{s.when}</div>
-                <div className={`mt-1 text-[18px] ${i === 0 ? "font-serif italic text-cream" : i === 1 ? "text-ember-2" : "text-[#8fd0a6]"}`}>{s.what}</div>
+                <div className="font-mono text-[12px] text-cream-2">{s.when}</div>
+                <div className={`mt-1 text-[18px] ${i === 0 ? "font-serif text-cream" : i === 1 ? "text-ember-2" : "text-[#8fd0a6]"}`}>{s.what}</div>
               </motion.li>
             ))}
           </ol>
@@ -149,7 +149,7 @@ function Translator({ state }: { state: LedgerState | null }) {
             <div className="mt-8 rounded-[18px] border border-rule bg-night p-5 font-mono text-[12.5px] leading-[1.9] text-cream">
               <div className="text-cream-2">{claim.id}</div>
               <div>kind: <span className="text-ember-2">{claim.kind}</span></div>
-              <div>said: <span className="font-serif text-[14px] italic">"{claim.statement.slice(0, 60)}"</span></div>
+              <div>said: <span className="font-serif text-[14px]">"{claim.statement.slice(0, 60)}"</span></div>
               <div>verdict: <span className={claim.verdict === "verified" ? "text-[#8fd0a6]" : "text-[#f0a48c]"}>{claim.verdict}</span></div>
             </div>
           )}
@@ -182,11 +182,11 @@ function Translator({ state }: { state: LedgerState | null }) {
 function SecondAfter() {
   const reduce = useReducedMotion();
   const steps: { t: string; label: string; body: React.ReactNode }[] = [
-    { t: "you speak", label: "Heard", body: <span className="font-serif text-[20px] italic">"MFA's on for everyone."</span> },
+    { t: "you speak", label: "Heard", body: <span className="font-serif text-[20px]">"MFA's on for everyone."</span> },
     { t: "+0.3 s", label: "Typed", body: <code className="rounded-md bg-night px-2.5 py-1 font-mono text-[12px] text-cream">mfa.enforced · scope everyone · okta, aws</code> },
     { t: "+0.6 s", label: "Checked Okta", body: "41 of 41 active people enrolled in MFA." },
     { t: "+0.8 s", label: "Checked AWS IAM", body: <>11 of 14 users pass. <b className="font-medium text-bad">jsmith-contractor</b> left last week and has no MFA.</> },
-    { t: "+1.1 s", label: "Pushed back", body: <span className="font-serif text-[19px] italic text-ember">"Ah. The IAM report and you have a small disagreement."</span> },
+    { t: "+1.1 s", label: "Pushed back", body: <span className="font-serif text-[18px] text-ember">"Ah. The IAM report and you have a small disagreement."</span> },
     { t: "+1.4 s", label: "Translated", body: "SOC 2 CC6.1, ISO A.8.5, NIST IA-2(1), PCI 8.4.2, HIPAA 164.312(d)." },
     { t: "call ends", label: "Sealed", body: <span>Ed25519 signature over the packet's fingerprint. Change one word and verification fails.</span> },
   ];
