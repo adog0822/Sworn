@@ -249,18 +249,27 @@ b { font-weight: 650; }
 <section class="slide">
   <h2>No compliance tool checks what people say.</h2>
   <div style="display:flex;gap:40px;margin-top:22px;align-items:center">
-    <div style="position:relative;width:600px;height:420px;flex:none">
-      <div style="position:absolute;left:40px;top:0;width:560px;height:380px;background:var(--sheet);border:1px solid var(--rule);border-radius:18px"></div>
-      <div style="position:absolute;left:320px;top:0;width:1px;height:380px;border-left:1px dashed var(--rule)"></div>
-      <div style="position:absolute;left:40px;top:190px;width:560px;border-top:1px dashed var(--rule)"></div>
-      <p style="position:absolute;left:40px;top:392px;width:560px;text-align:center;font-size:14px;color:var(--ink3)">Reads documents &#8594; Checks live systems</p>
-      <p style="position:absolute;left:-150px;top:180px;width:340px;text-align:center;font-size:14px;color:var(--ink3);transform:rotate(-90deg)">Forms and dashboards &#8594; Conversation</p>
-      <div style="position:absolute;left:70px;top:46px;display:flex;align-items:center;gap:10px"><img src="img/logos/openai.png" width="34" height="34" alt="OpenAI"><img src="img/logos/claude.svg" width="34" height="34" alt="Claude"><span style="font-size:15px;color:var(--ink2)">ChatGPT, Claude</span></div>
-      <div style="position:absolute;left:70px;top:226px;display:flex;align-items:center;gap:10px"><img src="img/logos/conveyor.png" width="34" height="34" alt="Conveyor" style="border-radius:8px"><span style="font-size:15px;color:var(--ink2)">Conveyor, SafeBase</span></div>
-      <div style="position:absolute;left:70px;top:290px;display:flex;align-items:center;gap:10px"><img src="img/logos/fieldguide.png" width="34" height="34" alt="Fieldguide" style="border-radius:8px"><img src="img/logos/datasnipper.png" width="34" height="34" alt="DataSnipper" style="border-radius:8px"><span style="font-size:15px;color:var(--ink2)">Fieldguide, DataSnipper</span></div>
-      <div style="position:absolute;left:350px;top:226px;display:flex;align-items:center;gap:10px"><img src="img/logos/vanta.png" width="34" height="34" alt="Vanta" style="border-radius:8px"><img src="img/logos/drata.ico" width="34" height="34" alt="Drata" style="border-radius:8px"><span style="font-size:15px;color:var(--ink2)">Vanta, Drata</span></div>
-      <div style="position:absolute;left:350px;top:290px;display:flex;align-items:center;gap:10px"><img src="img/logos/sprinto.webp" width="34" height="34" alt="Sprinto" style="border-radius:8px"><img src="img/logos/scrut.png" width="34" height="34" alt="Scrut" style="border-radius:8px"><span style="font-size:15px;color:var(--ink2)">Sprinto, Scrut</span></div>
-      <div style="position:absolute;left:430px;top:52px;text-align:center"><div style="width:52px;height:52px;margin:0 auto;border-radius:14px;background:var(--night);color:var(--ember2);display:grid;place-items:center;font-size:28px;font-weight:800;font-variation-settings:'wdth' 120">S</div><p style="margin-top:8px;font-size:20px;font-weight:700;font-variation-settings:'wdth' 115">Sworn</p></div>
+    <div style="position:relative;width:620px;height:440px;flex:none">
+      <div style="position:absolute;inset:20px 0 20px 0;background:var(--sheet);border:1px solid var(--rule);border-radius:18px"></div>
+      <div style="position:absolute;left:310px;top:20px;bottom:20px;border-left:1px dashed var(--rule)"></div>
+      <div style="position:absolute;left:0;right:0;top:220px;border-top:1px dashed var(--rule)"></div>
+      <!-- axis labels sit on the edges they describe -->
+      <span style="position:absolute;left:50%;top:8px;transform:translateX(-50%);background:var(--paper);padding:2px 12px;font-size:13px;font-weight:600;color:var(--ink)">&#8593; Talks with people</span>
+      <span style="position:absolute;left:50%;bottom:8px;transform:translateX(-50%);background:var(--paper);padding:2px 12px;font-size:13px;font-weight:600;color:var(--ink3)">&#8595; Forms and dashboards</span>
+      <span style="position:absolute;left:-14px;top:220px;transform:translate(-50%,-50%) rotate(-90deg);background:var(--paper);padding:2px 12px;font-size:13px;font-weight:600;color:var(--ink3);white-space:nowrap">Reads documents</span>
+      <span style="position:absolute;right:-14px;top:220px;transform:translate(50%,-50%) rotate(90deg);background:var(--paper);padding:2px 12px;font-size:13px;font-weight:600;color:var(--ink);white-space:nowrap">Checks live systems</span>
+      <!-- quadrant names -->
+      <p style="position:absolute;left:28px;top:40px;font-size:15px;font-weight:650;color:var(--ink3)">Talks, but can't check anything</p>
+      <p style="position:absolute;left:334px;top:40px;font-size:15px;font-weight:650;color:var(--ember)">Talks and checks</p>
+      <p style="position:absolute;left:28px;top:240px;font-size:15px;font-weight:650;color:var(--ink3)">Answers from documents</p>
+      <p style="position:absolute;left:334px;top:240px;font-size:15px;font-weight:650;color:var(--ink3)">Checks systems, asks by form</p>
+      <!-- players -->
+      <div style="position:absolute;left:28px;top:84px;display:flex;align-items:center;gap:10px"><img src="img/logos/openai.png" width="34" height="34" alt="OpenAI" style="border-radius:8px;border:1px solid var(--rule)"><img src="img/logos/claude.svg" width="34" height="34" alt="Claude"><span style="font-size:15px;color:var(--ink2)">ChatGPT, Claude</span></div>
+      <div style="position:absolute;left:28px;top:284px;display:flex;align-items:center;gap:10px"><img src="img/logos/conveyor.png" width="34" height="34" alt="Conveyor" style="border-radius:8px"><span style="font-size:15px;color:var(--ink2)">Conveyor, SafeBase</span></div>
+      <div style="position:absolute;left:28px;top:340px;display:flex;align-items:center;gap:10px"><img src="img/logos/fieldguide.png" width="34" height="34" alt="Fieldguide" style="border-radius:8px"><img src="img/logos/datasnipper.png" width="34" height="34" alt="DataSnipper" style="border-radius:8px"><span style="font-size:15px;color:var(--ink2)">Fieldguide, DataSnipper</span></div>
+      <div style="position:absolute;left:334px;top:284px;display:flex;align-items:center;gap:10px"><img src="img/logos/vanta.png" width="34" height="34" alt="Vanta" style="border-radius:8px"><img src="img/logos/drata.ico" width="34" height="34" alt="Drata" style="border-radius:8px"><span style="font-size:15px;color:var(--ink2)">Vanta, Drata</span></div>
+      <div style="position:absolute;left:334px;top:340px;display:flex;align-items:center;gap:10px"><img src="img/logos/sprinto.webp" width="34" height="34" alt="Sprinto" style="border-radius:8px"><img src="img/logos/scrut.png" width="34" height="34" alt="Scrut" style="border-radius:8px"><span style="font-size:15px;color:var(--ink2)">Sprinto, Scrut</span></div>
+      <div style="position:absolute;left:334px;top:84px;display:flex;align-items:center;gap:14px"><div style="width:52px;height:52px;border-radius:14px;background:var(--night);color:var(--ember2);display:grid;place-items:center;font-size:28px;font-weight:800;font-variation-settings:'wdth' 120">S</div><div><p style="font-size:22px;font-weight:700;font-variation-settings:'wdth' 115">Sworn</p><p style="font-size:14px;color:var(--ink2)">Voice in, live checks out</p></div></div>
     </div>
     <div style="flex:1;display:flex;flex-direction:column;gap:18px;font-size:18px;color:var(--ink2);line-height:1.5">
       <p><b style="color:var(--ink)">Compliance platforms</b> pull data from systems, but they reach people through forms and dashboards.</p>
